@@ -72,7 +72,7 @@ addEventListener('pointermove', e => {
 })(0);
 
 /* room clickables */
-function applyLamp() { roomEl.classList.toggle('lamp', S.lamp); }
+function applyLamp() { roomEl.classList.toggle('lamp-on', S.lamp); }
 $('#lamp').addEventListener('click', () => { S.lamp = !S.lamp; applyLamp(); play('click'); save(); toast(S.lamp ? 'the lamp flickers on.' : 'darkness again.'); });
 $('#mug').addEventListener('click', () => { play('click'); toast('cold coffee. it has been here since "the incident".'); });
 $('#floppy').addEventListener('click', () => { play('click'); toast('label: BACKUP_FINAL_v2_REAL (the last two words are scratched out)'); });
