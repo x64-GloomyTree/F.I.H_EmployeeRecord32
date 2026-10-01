@@ -35,7 +35,9 @@ function play(n) {
   const b = a.cloneNode(); b.volume = a.volume; b.play().catch(() => {});
 }
 function stop(n) { const a = aud[n]; if (a) { a.pause(); a.currentTime = 0; } }
-addEventListener('pointerdown', () => { if (!audioOn) { audioOn = true; play('fan'); } });
+addEventListener('pointerdown', () => {
+  if (!audioOn) { audioOn = true; play('fan'); if (S.sound) FIHMusic.start().then(musicSync); }
+});
 
 /* ---------- toast ---------- */
 let tt;
@@ -103,6 +105,7 @@ $('#lockForm').addEventListener('submit', async e => {
 
 /* ---------- console views ---------- */
 const con = $('#console'); let view = 0;
+function musicSync() { FIHMusic.update({ view, mounted: S.mounted, enabled: S.sound }); }
 function updateArrows() {
   const L = $('#arrL'), R = $('#arrR');
   L.hidden = !S.adminOpen || view === -1; R.hidden = !S.adminOpen || view === 1;
@@ -110,7 +113,7 @@ function updateArrows() {
   R.querySelector('span').textContent = view === -1 ? 'TERMINAL' : 'PLAYBACK';
 }
 function setView(v) {
-  view = v; S.view = v; con.style.setProperty('--view', v); updateArrows();
+  view = v; S.view = v; con.style.setProperty('--view', v); updateArrows(); musicSync();
   if (v === 1) startVhs(); else stopVhs();
   if (v === 0) setTimeout(focusIn, 400);
   save();
@@ -199,8 +202,8 @@ const CMDS = {
     if (FILES[n]) FILES[n].forEach(l => addLine(l)); else addLine('cat: ' + a[0] + ': no such file', 'err');
   },
   'sound': async a => {
-    if (a[0] === 'off') { S.sound = false; Object.keys(aud).forEach(stop); addLine('sound: off'); }
-    else if (a[0] === 'on') { S.sound = true; audioOn = true; play('fan'); addLine('sound: on'); }
+    if (a[0] === 'off') { S.sound = false; Object.keys(aud).forEach(stop); musicSync(); addLine('sound: off'); }
+    else if (a[0] === 'on') { S.sound = true; audioOn = true; play('fan'); FIHMusic.start().then(musicSync); addLine('sound: on'); }
     else addLine('usage: sound on|off');
   },
   'exit': async () => { addLine('closing session...'); await sleep(350); enterRoom(); },
@@ -300,6 +303,7 @@ function updateVhs() {
   $('.nosig').textContent = on ? 'LOADING...' : 'NO TAPE'; $('#vhsHint').hidden = on;
   if (!on) { vImg.removeAttribute('src'); vBox.classList.remove('playing', 'loading'); stop('vhs'); save(); }
   else if (view === 1) startVhs();
+  musicSync();
   save();
 }
 function startVhs() {
