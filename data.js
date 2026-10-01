@@ -29,18 +29,18 @@ const BANNER = String.raw` ______ _____ _    _
 
 // ===== Fake files readable with: cat <file> =====
 const FILES = {
-  "readme.txt": ["F.I.H HQ workstation 06.", "Authorized staff only.", "If you are reading this, you are not staff."],
-  "todo.txt":   ["- change password (again)", "- ask Dave about the archive door", "- stop leaving the feed running"],
-  "cam06.log":  ["[00:00:01] feed started", "[00:00:02] subject not in frame", "[??:??:??] LOG CORRUPTED"]
+  "readme.txt": ["F.I.H HQ workstation 06.", "Authorized staff only.", "If you are reading this, you are logged as guest, some functions may be restricted"],
+  "todo.txt":   ["- change password (again)", "- ask Dave about the archive door", "- stop leaving the feed running","- verify the hashing function to destroy evidences"],
+  "cam06.log":  ["[LOCATION : Preparation Room] // [EXPECTED PERSONNEL : ████████]", "[00:00:01] feed started", "[00:00:02] subject not in frame", "[??:??:??] LOG CORRUPTED"]
 };
 
 // ===== Hidden commands (usable after admin). Order of "id" = order in the volume name. =====
 // Volume name = FRAGMENTS joined by "-" in id order, e.g. FLAT-LINE-ZERO-SIX
 const CLUES = [
-  { id: 1, cmd: "trace cam06",     frag: "FLAT", out: ["tracing feed origin...", "hop 1: HQ-GATEWAY", "hop 2: ████████", "[PLACEHOLDER OUTPUT 1]"] },
-  { id: 2, cmd: "decode log 41",   frag: "LINE", out: ["decoding log at 41% integrity...", "...", "[PLACEHOLDER OUTPUT 2]"] },
-  { id: 3, cmd: "unlock vault 06", frag: "ZERO", out: ["vault 06 handshake...", "tumblers: 1 2 3 4", "[PLACEHOLDER OUTPUT 3]"] },
-  { id: 4, cmd: "query target",    frag: "SIX",  out: ["querying target registry...", "status field: ██████", "[PLACEHOLDER OUTPUT 4]"] }
+  { id: 1, cmd: "trace cam06",     frag: "FLAT", out: ["tracing feed origin...", "hop 1: HQ-GATEWAY", "hop 2: ████████", "[MAINTENANCE NOTE] : Delete feed to preserve deployed agent identity"] },
+  { id: 2, cmd: "decode log 41",   frag: "LINE", out: ["decoding log at 41% integrity...", "...", "> Error Traceback : Failed to corrupt CAM06_feed, failed at 59%"] },
+  { id: 3, cmd: "unlock vault 06", frag: "ZERO", out: ["vault 06 handshake...", "tumblers: 1 2 3 4", "admin elevation found...", "[F.I.H Employee Manual Note] : Always close the vault door before clocking out :)"] },
+  { id: 4, cmd: "query target",    frag: "SIX",  out: ["querying target registry...", "status field: ██████", "CODENAME : ENTITY-01 // MANIFESTED",  "Deployed Agent : ████████, Executor of F.I.H"] }
 ];
 
 // ===== Library: add/remove books freely =====
@@ -54,11 +54,11 @@ const BOOKS = [
 |  CARE   |
 +---------+`,
     pages: [
-      "[LORE PLACEHOLDER]\n\nWelcome to F.I.H.\nPlease do not leave feeds running unattended.",
+      "[EMPLOYEE MANUAL]\n\nWelcome to F.I.H.\nPlease do not leave feeds running unattended. Follow the directives of your superior",
       "SECTION 4: PASSWORDS\n\nPasswords must be changed.\nPasswords must not be written down.\n\n(see: the post-it incident)",
-      "[HINT 1/4 PLACEHOLDER]\n\nMargin note in pen:\n\"to follow a feed back to its source, trace it. cam06 is the one that matters.\"\n\ncommand: trace cam06"
+      "[HINT 1/4 PLACEHOLDER]\n\nUser note by [EMPLOYEE-032] :\n\"to follow a feed back to its source, trace it. cam06 is under my supervision.\"\n\ncommand: trace cam06"
     ] },
-  { id: "nightlog", title: "NIGHT SHIFT LOG", spine: "NIGHT LOG", author: "J. M.", h: 9, w: 2.2,
+  { id: "nightlog", title: "NIGHT SHIFT LOG #32", spine: "NIGHT LOG", author: "J. M.", h: 9, w: 2.2,
     cover: String.raw`+---------+
 |   . *   |
 |  *   .  |
@@ -67,8 +67,8 @@ const BOOKS = [
 |  NIGHT  |
 +---------+`,
     pages: [
-      "[LORE PLACEHOLDER]\n\n03:12 - the monitor turned on by itself again.",
-      "[HINT 2/4 PLACEHOLDER]\n\nA log that reads 41% can still be decoded.\n\ncommand: decode log 41"
+      "[DIRECTIVE] : Delete immediately any feed showing ████████\n\n03:12 - the monitor turned on by itself again, I wish they finally fixed it...",
+      "[User Note]\n\nThis is bad news, the movie I used to watch all the time got scraped by the dust in this shitty room...\n Fortunately, I discovered that a log that reads 41% can still be decoded.\n\ncommand: decode log 41"
     ] },
   { id: "vault", title: "VAULT INVENTORY", spine: "VAULT 06", author: "ARCHIVIST", h: 10.5, w: 2.6,
     cover: String.raw`+---------+
@@ -79,10 +79,10 @@ const BOOKS = [
 |   06    |
 +---------+`,
     pages: [
-      "[LORE PLACEHOLDER]\n\nItem 06: one tape. Do not play.",
-      "[HINT 3/4 PLACEHOLDER]\n\nThe vault answers to its own number.\n\ncommand: unlock vault 06"
+      "[ADDED ITEM]\n\nItem 06: one tape. Do not play. Prone to complete destruction of the record.",
+      "[VAULT MANUAL]\n\nThe vault answers to its own number. It can only be opened with admin elevation\n\ncommand: unlock vault 06"
     ] },
-  { id: "subject", title: "SUBJECT FILE 06", spine: "SUBJECT 06", author: "[REDACTED]", h: 8.5, w: 2.2,
+  { id: "subject", title: "MISSION #001 : DISMANTLE", spine: "SEARCH & ELIMINATE", author: "[REDACTED]", h: 8.5, w: 2.2,
     cover: String.raw`+---------+
 |  _____  |
 | / o o \ |
@@ -91,8 +91,8 @@ const BOOKS = [
 | ███████ |
 +---------+`,
     pages: [
-      "[LORE PLACEHOLDER]\n\nSubject 06 manifested at 03:12.",
-      "[HINT 4/4 PLACEHOLDER]\n\nWhen all else fails, ask the registry.\n\ncommand: query target"
+      "[ORIGIN]\n\nSubject 01 manifested at 03:12.\n\n First contact between researcher001 and ████████ was logged",
+      "[Target data access]\n\nWhen all else fails, ask the registry. This old system isn't reliable\n\ncommand: query target"
     ] },
   { id: "untitled", title: "UNTITLED", spine: "? ? ?", author: "UNKNOWN", h: 9.5, w: 2.0,
     cover: String.raw`+---------+
