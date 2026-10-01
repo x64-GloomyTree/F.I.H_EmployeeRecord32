@@ -39,11 +39,11 @@ button{font-family:inherit;cursor:pointer}
 .light{position:absolute;left:-20em;top:-10em;width:100em;height:60em;opacity:0;transition:opacity .5s;background:radial-gradient(ellipse 34em 26em at 29em 28em,rgba(255,185,90,.4),rgba(255,150,60,.12) 55%,transparent 75%);pointer-events:none!important}
 #room.lamp-on .light{opacity:1}
 .kb{position:absolute;left:20em;top:26em;width:20em;height:3.8em;border-radius:.5em;background:repeating-linear-gradient(90deg,#26261f 0 .9em,#191914 .9em 1em),#191914;transform:perspective(30em) rotateX(38deg);pointer-events:none!important}
-.lamp{left:6em;top:16em;width:6em;height:11em}
-.lamp i{position:absolute;display:block}
-.lamp .base{bottom:0;left:.5em;width:5em;height:.9em;background:#222;border-radius:50%}
-.lamp .arm{bottom:.6em;left:2.7em;width:.5em;height:8em;background:#2b2b2b;transform:rotate(12deg);transform-origin:bottom}
-.lamp .head{top:0;left:.2em;width:4.2em;height:2.4em;background:#343430;border-radius:2.4em 2.4em .4em .4em;transform:rotate(-14deg)}
+#lamp{left:6em;top:16em;width:6em;height:11em}
+#lamp i{position:absolute;display:block}
+#lamp .base{bottom:0;left:.5em;width:5em;height:.9em;background:#222;border-radius:50%}
+#lamp .arm{bottom:.6em;left:2.7em;width:.5em;height:8em;background:#2b2b2b;transform:rotate(12deg);transform-origin:bottom}
+#lamp .head{top:0;left:.2em;width:4.2em;height:2.4em;background:#343430;border-radius:2.4em 2.4em .4em .4em;transform:rotate(-14deg)}
 .mug{left:45em;top:23.4em;width:3em;height:3.2em;background:#2b2b28;border-radius:.3em .3em .8em .8em}
 .mug::after{content:"";position:absolute;right:-1em;top:.6em;width:1.1em;height:1.5em;border:.35em solid #2b2b28;border-left:0;border-radius:0 1em 1em 0}
 .floppy{left:41em;top:28.4em;width:4em;height:4em;background:#202020;transform:rotate(12deg);border-radius:.2em;color:#999;font-size:.8em;display:flex;align-items:flex-end;justify-content:center;padding:.4em}
