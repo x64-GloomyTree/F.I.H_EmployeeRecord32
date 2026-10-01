@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>...</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ROOM -->
+  <section id="room" class="scene active">
+    <div class="glow"></div>
+    <div id="stage">
+      <div class="layer" style="--d:4">
+        <div class="wall"></div>
+        <div class="item poster" id="poster"><pre>  /\_/\
+ ( o.o )
+  &gt; ^ &lt;
+
+ HANG IN
+  THERE</pre></div>
+      </div>
+      <div class="layer" style="--d:10"><div class="table"></div></div>
+      <div class="layer" style="--d:22">
+        <div class="stand"></div>
+        <div class="monitor">
+          <div class="screen" id="screenHit"><div class="scr-text">LOGIN_</div></div>
+          <div class="brand">F.I.H</div><div class="led"></div>
+          <div class="postit"><span id="postItText"></span></div>
+        </div>
+      </div>
+      <div class="layer" style="--d:26"><div class="light"></div></div>
+      <div class="layer" style="--d:30">
+        <div class="kb"></div>
+        <div class="item lamp" id="lamp"><i class="head"></i><i class="arm"></i><i class="base"></i></div>
+        <div class="item mug" id="mug"></div>
+        <div class="item floppy" id="floppy"><b>BACKUP</b></div>
+      </div>
+    </div>
+    <div class="hint">[ click the monitor ]</div>
+  </section>
+
+  <!-- LOCKSCREEN -->
+  <section id="lock" class="scene">
+    <div class="crt-frame xp">
+      <div class="topbar"><span>WELCOME</span><button class="btn" data-room>[ ESC ] ROOM</button></div>
+      <div class="xp-body">
+        <div class="xp-left"><div class="xp-logo">F.I.H</div><div>To begin, type your password</div></div>
+        <div class="xp-right">
+          <div class="xp-user">
+            <div class="avatar">:)</div>
+            <div>
+              <div class="uname">c.employee</div>
+              <form id="lockForm" autocomplete="off">
+                <input id="lockPw" type="password" placeholder="Password" maxlength="40" autocomplete="off">
+                <button type="submit">&gt;</button>
+              </form>
+              <div id="lockMsg"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONSOLE -->
+  <section id="console" class="scene" style="--view:0">
+    <div class="crt-frame">
+      <div class="topbar"><span>F.I.H-HQ // WORKSTATION 06</span><button class="btn" data-room>[ ESC ] ROOM</button></div>
+      <div class="viewport">
+
+        <div class="panel" id="pLib" style="--pos:-1">
+          <div class="p-title">ARCHIVE // READ ONLY</div>
+          <div id="shelf"></div>
+          <div class="board"></div>
+          <div class="cover"><pre id="coverArt">hover a book</pre><div id="coverTitle"></div><div id="coverAuthor"></div></div>
+          <div id="bookView" hidden>
+            <div id="bkHead"><span id="bkTitle"></span><button class="btn" id="bkClose">[ X ]</button></div>
+            <pre id="bkText"></pre>
+            <div class="bknav"><button class="btn" id="bkPrev">&lt; PREV</button><span id="bkNum"></span><button class="btn" id="bkNext">NEXT &gt;</button></div>
+          </div>
+        </div>
+
+        <div class="panel" id="pTerm" style="--pos:0">
+          <div id="out"></div>
+          <div class="prompt"><span>C:\HQ&gt;</span><input id="cmd" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"></div>
+        </div>
+
+        <div class="panel" id="pVhs" style="--pos:1">
+          <div id="vhsScreen"><img id="vhsImg" alt=""><div class="static"></div><div class="nosig">NO TAPE</div></div>
+          <div id="vhsInfo" hidden>
+            <div class="l">Target Status :</div>
+            <div class="r">Flatlined</div>
+            <div class="l2">Elapsed time :</div>
+            <div class="w" id="elapsed">00:00:00:00:000</div>
+          </div>
+          <div id="vhsHint">insert a tape: mount cd &lt;volume&gt;</div>
+          <pre id="vcr">
+ _______________________________________
+| [=======]  o o o        REC  PLAY  88:88 |
+|  _____________________________________  |
+| |_____________ TAPE SLOT _____________| |
+|_________________________________________|</pre>
+          <div class="vcr-bar"><span id="vhsState">NO TAPE</span><button class="btn" id="ejectBtn" hidden>[ EJECT ]</button></div>
+        </div>
+
+      </div>
+      <button id="arrL" class="arrow left" hidden>&#9664;<span>ARCHIVE</span></button>
+      <button id="arrR" class="arrow right" hidden>&#9654;<span>PLAYBACK</span></button>
+    </div>
+  </section>
+
+</div>
+<div id="toast"></div>
+<div id="fx"></div>
+<canvas id="noise"></canvas>
+<script src="data.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
