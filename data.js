@@ -32,10 +32,10 @@ const FILES = {
   "readme.txt": ["F.I.H HQ workstation 06.", "Authorized staff only.", "If you are reading this, you are logged as guest, some functions may be restricted"],
   "todo.txt":   ["- change password (again)", "- ask Dave about the archive door", "- LEAVE the feed running","- verify the hashing function to destroy evidences"],
   "cam06.log":  ["[LOCATION : Preparation Room] // [EXPECTED PERSONNEL : ████████]", "[00:00:01] feed started", "[00:00:02] subject not in frame", "[??:??:??] LOG CORRUPTED"],
-  "personnel.log": ["Skipping to relevant entries...", "[EMPLOYEE#031] - On vacation", "[EMPLOYEE#032] - Resigned", "[EMPLOYEE#033] - On sick leave]" ],
+  "personnel.log": ["Skipping to relevant entries...", "[EMPLOYEE#031] - On vacation", "[EMPLOYEE#032] - Resigned", "[EMPLOYEE#033] - On sick leave" ],
   "weeklyactivity.md": ["[MONDAY RECORD] : (voice transcript of the F.I.H CEO) We are proud to announce that every effort we put into our project are finally about to pay off ! The technology we managed to extract from our spying inside the [INSTITUTE] is ready to be deployed ON TERRAIN !!! (faint applauds can be heard in the background)", "[TUESDAY RECORD] : A meeting was added to your calendar about : Confidientiality during the [Hallowed Future] project deployment. Your presence is mandatory"],
   "gone.txt": ["[User Note] - Resigned", "Reason : \"I can't take it anymore, I can't work for a company that is willing to do anything to get what it wants, that is money most of the time. I can't be part of this anymore.", "They want to kill, they want to annihilate EVERYTHING that has gone through this rift, they even stole blueprints from the [Institute] to pursue their goal","I know something they have built a device they called it the [Portable Fish] I don't know exactly what they plan to do with it, as my last act of rebellion I left this station easily accessible, if you happen to find it, do what you need, seek the truth", "Note : Employee 032 was a good worker, but they were not able to handle the stress of the job. We wish them the best in their future endeavors.\""],
-  "hashes.txt" : ["[Note to self] delete later or they will defo fire me, I'm just too much of an airhead to remember all of that...", "ADMN pass = <projectname>08"],
+  "hashes.txt" : ["[Note to self] delete later or they will defo fire me, I'm just too much of an airhead to remember all of that...", "ADMN pass = <projectname>08"]
 }
 // ===== Hidden commands (usable after admin). Order of "id" = order in the volume name. =====
 // Volume name = FRAGMENTS joined by "-" in id order, e.g. FLAT-LINE-ZERO-SIX
@@ -70,7 +70,7 @@ const BOOKS = [
 |  NIGHT  |
 +---------+`,
     pages: [
-      "[DIRECTIVE] : Delete immediately any feed showing ████████\n\n03:12 - the monitor turned off by itself again, I'm not aware of the whole truth. The last time it happened the feed suffered a bit of lag due to how the technology they make us work with is. I saw someeone for just a frame entering the preparation room. They don't want me to see who.",
+      "[DIRECTIVE] : Delete immediately any feed showing ████████\n\n03:12 - the monitor turned off by itself again, I'm not aware of the whole truth. The last time it happened the feed suffered a bit of lag due to how old the technology they make us work with is. I saw someeone for just a frame entering the preparation room. They don't want me to see who.",
       "[User Note]\n\nThis is bad news, the movie I used to watch all the time got scraped by the dust in this shitty room...\n Fortunately, I discovered that a log that reads 41% can still be decoded thanks to the technology we discovered.\n\ncommand: decode log 41"
     ] },
   { id: "vault", title: "VAULT INVENTORY", spine: "VAULT 06", author: "ARCHIVIST", h: 10.5, w: 2.6,
@@ -123,7 +123,7 @@ A-08  [REDACTED]   DEPLOYED - ████████
 A-09  H█LL█W       MISSING
 A-10  ___________  PENDING
 
-They forgot to erase A-08 record, I'm almost entierely sure it is the same person as the one in the feed, but I can't be sure. The registry is a mess, I don't know if they are even aware of what they are doing. I don't know if they even care.`,
+They forgot to erase A-08 record, I'm almost entirely sure it is the same person as the one in the feed, but I can't be certain. The registry is a mess, I don't know if they are even aware of what they are doing. I don't know if they even care.`,
 
 `RETIRED / LOST
 
@@ -160,7 +160,7 @@ Note in pen, bottom margin:
       "(Through the whole hashing process files here have gone through, this one seems to be in a pretty bad state, as if it wasn't supposed to be here in the first place)\n\nThe pages are mostly blank.",
       "",
       "",
-      "[EXTERNAL DATA CHUNK]\n[ACCESS POINT : USB FLASH DRIVE]\n[OWNER : Marine Institute of the Twin Peaks]\n\nFour pieces. Order matters, low to high.\nJoin them with dashes.\n\ncommand: mount cd <volume>\n\n to whoever we are reaching with this, save our souls, life isn't a choice but a right, what we discovered isn't to be destroyed but to be cherished, whatever the cost, retreive what you can, sabotage waht you have to."
+      "[EXTERNAL DATA CHUNK]\n[ACCESS POINT : USB FLASH DRIVE]\n[OWNER : Marine Institute of the Twin Peaks]\n\nFour pieces. Order matters, low to high.\nJoin them with dashes.\n\ncommand: mount cd <volume>\n\n to whoever we are reaching with this, save our souls, life isn't a choice but a right, what we discovered isn't to be destroyed but to be cherished, whatever the cost, retreive what you can, sabotage what you have to."
     ] }
 ];
 const TAPES = [

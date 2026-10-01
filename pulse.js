@@ -8,7 +8,7 @@ const FIHPulse = (() => {
     const d = document.createElement('div');
     d.style.cssText = 'position:absolute;inset:0;pointer-events:none;color:#39ff5a;font-size:.9em;text-shadow:0 0 .3em #39ff5a;z-index:2';
     d.innerHTML =
-      '<span data-k="lead" style="position:absolute;left:.6em;top:.3em">LEAD II</span>' +
+      '<span data-k="lead" style="position:absolute;left:.6em;top:.3em">ENTITY-001</span>' +
       '<span data-k="hr" style="position:absolute;right:.6em;top:.3em">HR --</span>' +
       '<span data-k="alarm" style="position:absolute;left:0;right:0;top:38%;text-align:center;font-size:1.6em;color:#ff3b3b;text-shadow:0 0 .4em #ff3b3b;display:none">ASYSTOLE</span>' +
       '<span data-k="spd" style="position:absolute;left:.6em;bottom:.3em;opacity:.7">25 mm/s</span>' +
