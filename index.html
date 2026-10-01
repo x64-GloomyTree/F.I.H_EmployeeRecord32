@@ -89,12 +89,11 @@
         </div>
 
         <div class="panel" id="pVhs" style="--pos:1">
-          <div id="vhsScreen"><img id="vhsImg" alt=""><div class="static"></div><div class="nosig">NO TAPE</div></div>
+          <div id="vhsScreen"><img id="vhsImg" alt=""><canvas id="vhsCanvas"></canvas><div class="static"></div><div class="nosig">NO TAPE</div></div>
           <div id="vhsInfo" hidden>
             <div class="l">Target Status :</div>
-            <div class="r">Flatlined</div>
-            <div class="l2">Elapsed time :</div>
-            <div class="w" id="elapsed">00:00:00:00:000</div>
+            <div class="r white" id="vhsStatus">Flatlined</div>
+            <div id="vhsTimer"><div class="l2">Elapsed time :</div><div class="w" id="elapsed">00:00:00:00:000</div></div>
           </div>
           <div id="vhsHint">insert a tape: mount cd &lt;volume&gt;</div>
           <pre id="vcr">
@@ -118,6 +117,7 @@
 <canvas id="noise"></canvas>
 <script src="data.js"></script>
 <script src="music.js"></script>
+<script src="pulse.js"></script>
 <script src="main.js"></script>
 </body>
 </html>

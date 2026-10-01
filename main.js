@@ -10,6 +10,7 @@ const touchy = matchMedia('(hover: none)').matches;
 const DEF = { lockOpen:false, adminOpen:false, view:0, lamp:false, fragments:[], mounted:false, log:[], history:[], pages:{}, read:[], sound:true };
 let S = structuredClone(DEF);
 try { Object.assign(S, JSON.parse(localStorage.getItem(CFG.saveKey) || '{}')); } catch (e) {}
+if (S.mounted === true) S.mounted = 'main';
 const save = () => { try { localStorage.setItem(CFG.saveKey, JSON.stringify(S)); } catch (e) {} };
 window.fihReset = () => { try { localStorage.removeItem(CFG.saveKey); } catch (e) {} location.reload(); };
 
@@ -105,7 +106,10 @@ $('#lockForm').addEventListener('submit', async e => {
 
 /* ---------- console views ---------- */
 const con = $('#console'); let view = 0;
-function musicSync() { FIHMusic.update({ view, mounted: S.mounted, enabled: S.sound }); }
+function musicSync() {
+  const t = TAPES.find(x => x.id === S.mounted);
+  FIHMusic.update({ view, mounted: !!(t && t.vhsMusic !== false), enabled: S.sound });
+}
 function updateArrows() {
   const L = $('#arrL'), R = $('#arrR');
   L.hidden = !S.adminOpen || view === -1; R.hidden = !S.adminOpen || view === 1;
@@ -185,7 +189,7 @@ const CMDS = {
   },
   'whoami': async () => addLine(S.adminOpen ? 'c.employee (ELEVATED)' : 'c.employee (guest)'),
   'date': async () => addLine(new Date().toString()),
-  'uname': async () => addLine('FIH-OS 2.06 build 0603 cam06-ws x86'),
+  'uname': async () => addLine('FIH-OS 2.06 build 0603 WorkStation032-ED x86'),
   'echo': async a => addLine(a.join(' ')),
   'sudo': async () => addLine('nice try.', 'err'),
   'cd': async () => addLine(S.adminOpen ? 'cd: use the arrows to move between rooms.' : 'cd: permission denied', 'err'),
@@ -232,9 +236,11 @@ const CMDS = {
     if ((a[0] || '').toLowerCase() !== 'cd' || !a[1]) return addLine('usage: mount cd <volume>');
     const name = a.slice(1).join(' ').toUpperCase();
     await printSeq(['reading volume ' + name + ' ...'], 500);
-    if (await sha(name) === CFG.cdHash) {
+    const hsh = await sha(name), found = TAPES.find(t => t.hash === hsh);
+    if (found) {
+      if (S.mounted && S.mounted !== found.id) addLine('ejecting current tape...');
       await printSeq(['volume found.', 'tape inserted into PLAYBACK unit.'], 350);
-      S.mounted = true; updateVhs(); addLine('go to the right room to play it.');
+      S.mounted = found.id; updateVhs(); addLine('go to the right room to play it.');
     } else { play('error'); addLine('mount: volume not found.', 'err'); }
   }
 };
@@ -296,32 +302,44 @@ $('#bkClose').addEventListener('click', closeBook);
 
 /* ---------- VHS ---------- */
 const vBox = $('#vhsScreen'), vImg = $('#vhsImg');
+const tapeNow = () => TAPES.find(t => t.id === S.mounted) || null;
 function updateVhs() {
-  const on = S.mounted;
+  const t = tapeNow(), on = !!t;
   $('#vhsInfo').hidden = !on; $('#vcr').classList.toggle('loaded', on);
   $('#vhsState').textContent = on ? 'TAPE LOADED' : 'NO TAPE'; $('#ejectBtn').hidden = !on;
   $('.nosig').textContent = on ? 'LOADING...' : 'NO TAPE'; $('#vhsHint').hidden = on;
-  if (!on) { vImg.removeAttribute('src'); vBox.classList.remove('playing', 'loading'); stop('vhs'); save(); }
+  if (on) {
+    const st = $('#vhsStatus'); st.textContent = t.status || 'Unknown'; st.className = 'r ' + (t.statusColor || 'white');
+    $('#vhsTimer').hidden = t.timer === false;
+  }
+  if (!on) { vImg.removeAttribute('src'); FIHPulse.stop(); vBox.classList.remove('playing', 'loading', 'pulse'); stop('vhs'); }
   else if (view === 1) startVhs();
-  musicSync();
-  save();
+  musicSync(); save();
 }
 function startVhs() {
-  if (!S.mounted) return;
-  vBox.classList.remove('playing'); vBox.classList.add('loading'); play('vhs');
-  setTimeout(() => { if (!S.mounted) return; vImg.src = CFG.cdGif + '?r=' + Date.now(); vBox.classList.remove('loading'); vBox.classList.add('playing'); }, 900);
+  const t = tapeNow(); if (!t) return;
+  FIHPulse.stop(); vBox.classList.remove('playing', 'pulse'); vBox.classList.add('loading'); play('vhs');
+  setTimeout(() => {
+    if (tapeNow() !== t) return;
+    vBox.classList.remove('loading');
+    if (t.type === 'pulse') { vImg.removeAttribute('src'); vBox.classList.add('playing', 'pulse'); FIHPulse.start($('#vhsCanvas'), t.pulse || {}); }
+    else { vImg.src = t.src + '?r=' + Date.now(); vBox.classList.add('playing'); }
+  }, 900);
 }
-function stopVhs() { stop('vhs'); }
-$('#ejectBtn').addEventListener('click', () => { S.mounted = false; updateVhs(); toast('tape ejected.'); });
+function stopVhs() { stop('vhs'); FIHPulse.stop(); }
+$('#ejectBtn').addEventListener('click', () => { S.mounted = false; updateVhs(); toast('tape ejected.'); play('click'); });
 
-const T0 = new Date(CFG.stopwatchStart).getTime();
 function fmt(ms) {
   ms = Math.max(0, ms);
   const d = Math.floor(ms / 864e5), h = Math.floor(ms % 864e5 / 36e5), m = Math.floor(ms % 36e5 / 6e4), s = Math.floor(ms % 6e4 / 1e3), x = Math.floor(ms % 1e3);
   return pad(d) + ':' + pad(h) + ':' + pad(m) + ':' + pad(s) + ':' + pad(x, 3);
 }
 (function sw() {
-  if (S.mounted && view === 1 && current === 'console') $('#elapsed').textContent = isNaN(T0) ? '--:--:--:--:---' : fmt(Date.now() - T0);
+  const t = tapeNow();
+  if (t && view === 1 && current === 'console') {
+    const T0 = new Date(t.start || CFG.stopwatchStart).getTime();
+    $('#elapsed').textContent = isNaN(T0) ? '--:--:--:--:---' : fmt(Date.now() - T0);
+  }
   requestAnimationFrame(sw);
 })();
 
