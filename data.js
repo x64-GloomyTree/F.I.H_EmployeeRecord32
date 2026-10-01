@@ -41,9 +41,9 @@ const FILES = {
 // Volume name = FRAGMENTS joined by "-" in id order, e.g. FLAT-LINE-ZERO-SIX
 const CLUES = [
   { id: 1, cmd: "trace cam06",     frag: "FLAT", out: ["tracing feed origin...", "hop 1: HQ-GATEWAY", "hop 2: ████████", "[MAINTENANCE NOTE] : Delete feed to preserve deployed agent identity"] },
-  { id: 2, cmd: "decode log 41",   frag: "LINE", out: ["decoding log at 41% integrity...", "...", "> Error Traceback : Failed to corrupt CAM06_feed, failed at 59%"] },
+  { id: 2, cmd: "decode log 41",   frag: "LINE", out: ["decoding log at 41% integrity...", "...", "> Error Traceback : Failed to corrupt CAM06_feed, failed at 59%","> User cancelled operation"] },
   { id: 3, cmd: "unlock vault 06", frag: "ZERO", out: ["vault 06 handshake...", "tumblers: 1 2 3 4", "admin elevation found...", "[F.I.H Employee Manual Note] : Always close the vault door before clocking out :)"] },
-  { id: 4, cmd: "query target",    frag: "SIX",  out: ["querying target registry...", "status field: ██████", "CODENAME : ENTITY-01 // FLATLINED",  "Deployed Agent : ████████, Executor of F.I.H"] },
+  { id: 4, cmd: "query target",    frag: "SIX",  out: ["querying target registry...", "status field: ██████", "CODENAME : ENTITY-01 // Status : TBD",  "Deployed Agent : ████████, Executor of F.I.H"] },
 ];
 
 // ===== Library: add/remove books freely =====
