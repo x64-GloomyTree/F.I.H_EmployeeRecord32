@@ -37,7 +37,7 @@ button{font-family:inherit;cursor:pointer}
 .led{position:absolute;right:2.4em;bottom:1em;width:.6em;height:.6em;border-radius:50%;background:var(--g);box-shadow:0 0 .8em var(--g);animation:pulse 2s infinite}
 .postit{position:absolute;left:14.2em;top:10.4em;width:6.6em;height:6.2em;background:#c9bb4d;transform:rotate(-7deg);box-shadow:.2em .3em .6em rgba(0,0,0,.6);padding:.7em .6em;font-family:'Pixelify Sans','VT323',monospace;font-size:1.05em;color:#2a2f6b;line-height:1.15;white-space:pre-line;pointer-events:none!important;filter:brightness(.85)}
 .light{position:absolute;left:-20em;top:-10em;width:100em;height:60em;opacity:0;transition:opacity .5s;background:radial-gradient(ellipse 34em 26em at 29em 28em,rgba(255,185,90,.4),rgba(255,150,60,.12) 55%,transparent 75%);pointer-events:none!important}
-#room.lamp .light{opacity:1}
+#room.lamp-on .light{opacity:1}
 .kb{position:absolute;left:20em;top:26em;width:20em;height:3.8em;border-radius:.5em;background:repeating-linear-gradient(90deg,#26261f 0 .9em,#191914 .9em 1em),#191914;transform:perspective(30em) rotateX(38deg);pointer-events:none!important}
 .lamp{left:6em;top:16em;width:6em;height:11em}
 .lamp i{position:absolute;display:block}
