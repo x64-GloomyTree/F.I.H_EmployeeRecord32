@@ -21,6 +21,12 @@
 
  HANG IN
   THERE !</pre></div>
+        <div class="item door" id="door">
+          <i class="warn"></i>
+          <i class="rod r1"></i><i class="rod r2"></i><i class="rod r3"></i><i class="rod r4"></i>
+          <i class="bar b1"></i><i class="bar b2"></i>
+          <div class="plate">LOCKDOWN</div>
+        </div>
       </div>
       <div class="layer" style="--d:10"><div class="table"></div></div>
       <div class="layer" style="--d:22">
@@ -28,6 +34,7 @@
         <div class="monitor">
           <div class="screen" id="screenHit"><div class="scr-text">LOGIN_</div></div>
           <div class="brand">F.I.H</div><div class="led"></div>
+          <div class="usbport" id="usbPort"></div>
           <div class="postit"><span id="postItText"></span></div>
         </div>
       </div>
@@ -41,7 +48,10 @@
       </div>
     </div>
     <div class="hint">[ click the monitor ]</div>
-    <button id="noteBtn" class="btn" hidden>[ NOTE ]</button>
+    <div class="inv">
+      <button id="noteBtn" class="btn" hidden>[ NOTE ]</button>
+      <button id="usbBtn" class="btn" hidden>[ USB ]</button>
+    </div>
   </section>
 
   <!-- LOCKSCREEN -->
@@ -116,9 +126,23 @@
 
 </div>
 <div id="paperView" hidden>
-  <div class="sheet">
-    <pre id="paperText"></pre>
-    <button class="btn" id="paperClose">[ put away ]</button>
+  <div class="flipwrap">
+    <div id="flip">
+      <div class="face front">
+        <pre id="paperText"></pre>
+        <div class="tip">[ drag to flip ]</div>
+      </div>
+      <div class="face back">
+        <button id="usbKey" class="usbkey" aria-label="usb key"></button>
+        <div class="tape"></div>
+        <div id="tornTape" hidden>(torn tape)</div>
+        <div class="tip">[ drag to flip back ]</div>
+      </div>
+    </div>
+    <div class="paperbar">
+      <button class="btn" id="flipBtn">[ flip ]</button>
+      <button class="btn" id="paperClose">[ put away ]</button>
+    </div>
   </div>
 </div>
 <div id="toast"></div>

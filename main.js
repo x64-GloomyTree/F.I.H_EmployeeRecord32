@@ -7,7 +7,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 const touchy = matchMedia('(hover: none)').matches;
 
 /* ---------- state (saved in localStorage) ---------- */
-const DEF = { lockOpen:false, adminOpen:false, view:0, lamp:false, fragments:[], mounted:false, log:[], history:[], pages:{}, read:[], sound:true, hasPaper:false };
+const DEF = { lockOpen:false, adminOpen:false, view:0, lamp:false, fragments:[], mounted:false, log:[], history:[], pages:{}, read:[], sound:true, hasPaper:false, hasUsb:false, usbPlugged:false, doorOpen:false };
 let S = structuredClone(DEF);
 try { Object.assign(S, JSON.parse(localStorage.getItem(CFG.saveKey) || '{}')); } catch (e) {}
 if (S.mounted === true) S.mounted = 'main';
@@ -81,13 +81,42 @@ $('#mug').addEventListener('click', () => { play('click'); toast('cold coffee. i
 $('#floppy').addEventListener('click', () => { play('click'); toast('label: BACKUP_FINAL_v2_REAL (the last two words are scratched out)'); });
 $('#poster').addEventListener('click', () => { play('click'); toast('"HANG IN THERE". the cat is no longer in the picture.'); });
 $('#postItText').textContent = CFG.postItText;
-const paperEl = $('#paper'), noteBtn = $('#noteBtn'), paperView = $('#paperView');
+const paperEl = $('#paper'), noteBtn = $('#noteBtn'), usbBtn = $('#usbBtn'), paperView = $('#paperView');
+const flip = $('#flip'), usbPort = $('#usbPort'), doorEl = $('#door');
+let ang = 0, drag = null;
+
+function setAng(a, anim) { ang = a; flip.style.transition = anim ? 'transform .45s' : 'none'; flip.style.transform = 'rotateY(' + a + 'deg)'; }
 function applyPaper() { paperEl.hidden = S.hasPaper; noteBtn.hidden = !S.hasPaper; }
-function openPaper() { $('#paperText').textContent = CFG.paperText; paperView.hidden = false; }
+function applyUsb() { usbBtn.hidden = !(S.hasUsb && !S.usbPlugged); usbPort.classList.toggle('plugged', S.usbPlugged); }
+function applyDoor() { doorEl.classList.toggle('open', S.doorOpen); }
+function openPaper() {
+  $('#paperText').textContent = CFG.paperText; setAng(0, false);
+  $('#usbKey').hidden = S.hasUsb; $('#tornTape').hidden = !S.hasUsb; paperView.hidden = false;
+}
 function closePaper() { paperView.hidden = true; play('click'); }
+function unlockDoor() { S.doorOpen = true; applyDoor(); play('crt'); toast('the iron rods retract. the door is unlocked.'); save(); }
+
 paperEl.addEventListener('click', () => { S.hasPaper = true; applyPaper(); play('click'); openPaper(); save(); });
 noteBtn.addEventListener('click', () => { play('click'); openPaper(); });
 $('#paperClose').addEventListener('click', closePaper);
+$('#flipBtn').addEventListener('click', () => setAng(ang > 90 ? 0 : 180, true));
+flip.addEventListener('pointerdown', e => { if (e.target.closest('button')) return; drag = { x: e.clientX, a: ang }; flip.setPointerCapture(e.pointerId); });
+flip.addEventListener('pointermove', e => { if (!drag) return; const d = Math.abs(e.clientX - drag.x) * 0.9; setAng(Math.max(0, Math.min(180, drag.a === 0 ? d : 180 - d)), false); });
+const endDrag = () => { if (!drag) return; drag = null; setAng(ang > 90 ? 180 : 0, true); };
+flip.addEventListener('pointerup', endDrag); flip.addEventListener('pointercancel', endDrag);
+
+$('#usbKey').addEventListener('click', () => { S.hasUsb = true; $('#usbKey').hidden = true; $('#tornTape').hidden = false; applyUsb(); play('click'); toast('you took the USB key.'); save(); });
+usbBtn.addEventListener('click', () => { play('click'); toast('plug it into the PC. there is a port on the monitor.'); });
+usbPort.addEventListener('click', () => {
+  if (S.usbPlugged) return toast('the key is still plugged in.');
+  if (!S.hasUsb) return toast('a USB port. nothing plugged in.');
+  S.usbPlugged = true; applyUsb(); buildShelf(); play('crt'); toast('USB detected. 3 new books were added to the archive.'); save();
+});
+doorEl.addEventListener('click', () => {
+  play('click');
+  if (!S.doorOpen) return toast('LOCKDOWN. breach detected. iron rods seal the door. you are not authorized.');
+  if (CFG.doorUrl) location.href = CFG.doorUrl; else toast('the door is open. (next layer not built yet)');
+});
 $('#screenHit').addEventListener('click', () => {
   if (zooming) return; zooming = true; play('click'); stage.classList.add('zoom');
   setTimeout(() => { zooming = false; S.lockOpen ? openConsole(true) : openLock(); }, 850);
@@ -212,7 +241,7 @@ const CMDS = {
   'ping': async a => { const h = a[0] || 'hq-gateway'; await printSeq(['pinging ' + h + ' ...', 'reply: time=12ms', 'reply: time=14ms', 'reply: timeout', 'reply: time=??ms'], 230); },
   'status': async () => {
     addLine('CAM06 ........ ONLINE (no subject)'); addLine('LINK ......... UNSTABLE');
-    addLine('ARCHIVE ...... ' + (S.adminOpen ? 'UNLOCKED' : 'LOCKED')); addLine('PLAYBACK ..... ' + (S.mounted ? 'TAPE LOADED' : S.adminOpen ? 'EMPTY' : 'LOCKED'));
+    addLine('ARCHIVE ...... ' + (S.adminOpen ? 'UNLOCKED' : 'LOCKED')); addLine('PLAYBACK ..... ' + (S.mounted ? 'TAPE LOADED' : S.adminOpen ? 'EMPTY' : 'LOCKED')), addLine('DOOR .......... ' + (S.doorOpen ? 'OPEN' : 'SEALED (LOCKDOWN)'));
   },
   'cat': async a => {
     const n = (a[0] || '').toLowerCase();
@@ -288,10 +317,11 @@ function showCover(b) {
   previewId = b.id; $('#coverArt').textContent = b.cover; $('#coverTitle').textContent = b.title; $('#coverAuthor').textContent = 'by ' + b.author;
   $$('.book').forEach(x => x.classList.toggle('sel', x.dataset.id === b.id));
 }
+const shelfBooks = () => BOOKS.concat(S.usbPlugged ? SMUGGLED_BOOKS : []);
 function buildShelf() {
   const sh = $('#shelf'); sh.innerHTML = '';
-  BOOKS.forEach(b => {
-    const d = document.createElement('button'); d.className = 'book'; d.dataset.id = b.id;
+  shelfBooks().forEach(b => {
+    const d = document.createElement('button'); d.className = 'book' + (b.smuggled ? ' smug' : ''); d.dataset.id = b.id;
     d.style.setProperty('--h', (b.h || 9) + 'em'); d.style.setProperty('--w', (b.w || 2.2) + 'em');
     const s = document.createElement('span'); s.textContent = b.spine || b.title; d.appendChild(s);
     if (!touchy) { d.addEventListener('mouseenter', () => showCover(b)); d.addEventListener('focus', () => showCover(b)); }
@@ -379,5 +409,5 @@ setInterval(() => {
 }, 90);
 
 /* ---------- init ---------- */
-applyLamp(); applyPaper(); buildShelf(); updateVhs(); con.style.setProperty('--view', 0); show('room');
+applyLamp(); applyPaper(); applyUsb(); applyDoor(); buildShelf(); updateVhs(); con.style.setProperty('--view', 0); show('room');
 })();

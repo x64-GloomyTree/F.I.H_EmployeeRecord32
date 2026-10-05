@@ -6,6 +6,7 @@ const CFG = {
   adminHash: "65033ee27a9c18e229ddef2a7df90f2fa4a9ebc2d67e9d226640e4ac15679b52",               // sha256 of the admin bypass password
   cdHash: "425933deabc4220492fa1eeda2aef7346a02796888930c797a811c58bd0454a6",                     // sha256 of the volume name (UPPERCASE)
   cdGif: "assets/cd_tape.gif",
+  doorUrl: "",
   stopwatchStart: "2026-10-01T03:12:00+02:00", 
   paperText: "reminder to self:\n\nthe old feed still runs on the\ninfrastructure side. nobody\nturned it off after the incident.\n\ntype:\ninfrastructure --connect cam06",
   nodes: {
@@ -167,6 +168,45 @@ Note in pen, bottom margin:
       "[EXTERNAL DATA CHUNK]\n[ACCESS POINT : USB FLASH DRIVE]\n[OWNER : Marine Institute of the Twin Peaks]\n\nFour pieces. Order matters, low to high.\nJoin them with dashes.\n\ncommand: mount cd <volume>\n\n to whoever we are reaching with this, save our souls, life isn't a choice but a right, what we discovered isn't to be destroyed but to be cherished, whatever the cost, retreive what you can, sabotage what you have to."
     ] }
 ];
+
+const SMUGGLED_BOOKS = [
+  { id: "inst_memo", title: "INSTITUTE MEMO", spine: "MEMO", author: "[INSTITUTE]", smuggled: true, h: 9, w: 2.2,
+    cover: String.raw`+---------+
+| [INST]  |
+| ------- |
+|  MEMO   |
+|  ░░░░░  |
++---------+`,
+    pages: [
+      "If you read this, you are our Deus Ex Machina\n\nSmuggled copy. Not for F.I.H eyes.\n We are aware of what F.I.H is trying to acheive as well as what technology was stolen from us. At the current time we are writing this we don't know their project, however nothing good can emerge from what is stirring up. This note and USB key was smuggled in by our infiltrated agent, he can't act himself because we can't risk exposing our only insider withing F.I.H.\n YOU, are our hope of saving life itself, you may also have encountered our attempt at breaching the company database directly from an external source, if not, I suggest you try accessing the archives, i'm sure you have the ability to do so",
+      "If you entered the workspace of E32, you are most likely, even certainly, under lockdown. The bad news is that you can't get out, the good news is that they can't open it very fast either due to protocol. You still have time to figure how to get out and forge an identity. The content of this key will help you.\n The reason for that is that the lockdown protocol they use is installed by a private external company that has no relation with whatever project they have, and that we actually engaged ourself as well to secure the laboratory. There is actually a way to get out, but you'll need to figure it out yourself because they most likely secured it with their own encryption.\n However if you found the way to get into the archives you have the technical ability to get out, we are sure of it !",
+      "To conclude this memo, here are the document we gave you : \n\n- Blueprint 7 (Stolen Technology)\n- Lockdown Service Manual\n- Administrator Terminal Guide"
+    ] },
+  { id: "inst_blueprint", title: "BLUEPRINT 7", spine: "BLUEPRINT", author: "[INSTITUTE]", smuggled: true, h: 10, w: 2.4,
+    cover: String.raw`+---------+
+| +--+ +-+|
+| |  +-+ ||
+| +--+ +-+|
+|  PLAN 7 |
++---------+`,
+    pages: [
+      "Extract of the Institute Blueprint List\n\nThe blueprints F.I.H took.\nDO NOT DISTRIBUTE\nDO NOT COPY",
+      "[DOOR HINT 2/3 PLACEHOLDER]"
+    ] },
+  { id: "inst_manual", title: "LOCKDOWN MANUAL", spine: "LOCKDOWN", author: "[INSTITUTE]", smuggled: true, h: 9.5, w: 2.3,
+    cover: String.raw`+---------+
+|  █   █  |
+|  █████  |
+|  █   █  |
+| LOCKDWN |
++---------+`,
+    pages: [
+      "[LORE PLACEHOLDER]\n\nProcedure for sealed sectors.",
+      "[DOOR HINT 3/3 PLACEHOLDER]\n\n(the unlock command goes here)"
+    ] }
+];
+
+
 const TAPES = [
   { id: "main", hash: CFG.cdHash, type: "pulse", status: "Flatlined", statusColor: "red",
     pulse: { beats: 3 }, vhsMusic: true },
