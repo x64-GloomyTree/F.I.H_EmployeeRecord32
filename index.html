@@ -37,9 +37,11 @@
         <div class="item lamp" id="lamp"><i class="head"></i><i class="arm"></i><i class="base"></i></div>
         <div class="item mug" id="mug"></div>
         <div class="item floppy" id="floppy"><b>BACKUP</b></div>
+        <div class="item paper" id="paper"></div>
       </div>
     </div>
     <div class="hint">[ click the monitor ]</div>
+    <button id="noteBtn" class="btn" hidden>[ NOTE ]</button>
   </section>
 
   <!-- LOCKSCREEN -->
@@ -112,6 +114,12 @@
     </div>
   </section>
 
+</div>
+<div id="paperView" hidden>
+  <div class="sheet">
+    <pre id="paperText"></pre>
+    <button class="btn" id="paperClose">[ put away ]</button>
+  </div>
 </div>
 <div id="toast"></div>
 <div id="fx"></div>

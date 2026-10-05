@@ -6,7 +6,11 @@ const CFG = {
   adminHash: "65033ee27a9c18e229ddef2a7df90f2fa4a9ebc2d67e9d226640e4ac15679b52",               // sha256 of the admin bypass password
   cdHash: "425933deabc4220492fa1eeda2aef7346a02796888930c797a811c58bd0454a6",                     // sha256 of the volume name (UPPERCASE)
   cdGif: "assets/cd_tape.gif",
-  stopwatchStart: "2026-10-01T03:12:00+02:00",  // PLACEHOLDER start date
+  stopwatchStart: "2026-10-01T03:12:00+02:00", 
+  paperText: "reminder to self:\n\nthe old feed still runs on the\ninfrastructure side. nobody\nturned it off after the incident.\n\ntype:\ninfrastructure --connect cam06",
+  nodes: {
+    cam06: "https://x64-gloomytree.github.io/F.I.H_HQ_CAM06_log/"
+  },
   sounds: {
     fan:   { src: "assets/sounds/fan_hum.mp3",   loop: true, vol: 0.50 },
     crt:   { src: "assets/sounds/crt_on.mp3",    vol: 0.5 },

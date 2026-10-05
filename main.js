@@ -7,7 +7,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 const touchy = matchMedia('(hover: none)').matches;
 
 /* ---------- state (saved in localStorage) ---------- */
-const DEF = { lockOpen:false, adminOpen:false, view:0, lamp:false, fragments:[], mounted:false, log:[], history:[], pages:{}, read:[], sound:true };
+const DEF = { lockOpen:false, adminOpen:false, view:0, lamp:false, fragments:[], mounted:false, log:[], history:[], pages:{}, read:[], sound:true, hasPaper:false };
 let S = structuredClone(DEF);
 try { Object.assign(S, JSON.parse(localStorage.getItem(CFG.saveKey) || '{}')); } catch (e) {}
 if (S.mounted === true) S.mounted = 'main';
@@ -81,7 +81,13 @@ $('#mug').addEventListener('click', () => { play('click'); toast('cold coffee. i
 $('#floppy').addEventListener('click', () => { play('click'); toast('label: BACKUP_FINAL_v2_REAL (the last two words are scratched out)'); });
 $('#poster').addEventListener('click', () => { play('click'); toast('"HANG IN THERE". the cat is no longer in the picture.'); });
 $('#postItText').textContent = CFG.postItText;
-
+const paperEl = $('#paper'), noteBtn = $('#noteBtn'), paperView = $('#paperView');
+function applyPaper() { paperEl.hidden = S.hasPaper; noteBtn.hidden = !S.hasPaper; }
+function openPaper() { $('#paperText').textContent = CFG.paperText; paperView.hidden = false; }
+function closePaper() { paperView.hidden = true; play('click'); }
+paperEl.addEventListener('click', () => { S.hasPaper = true; applyPaper(); play('click'); openPaper(); save(); });
+noteBtn.addEventListener('click', () => { play('click'); openPaper(); });
+$('#paperClose').addEventListener('click', closePaper);
 $('#screenHit').addEventListener('click', () => {
   if (zooming) return; zooming = true; play('click'); stage.classList.add('zoom');
   setTimeout(() => { zooming = false; S.lockOpen ? openConsole(true) : openLock(); }, 850);
@@ -183,6 +189,15 @@ const CMDS = {
   'help': async () => help(), '--help': async () => help(), '-h': async () => help(), '?': async () => help(),
   'clear': async () => { out.innerHTML = ''; S.log = []; },
   'cls': async () => { out.innerHTML = ''; S.log = []; },
+  'infrastructure': async a => {
+  if (a[0] !== '--connect' || !a[1]) return addLine('usage: infrastructure --connect <node>');
+  const url = CFG.nodes[a[1].toLowerCase()];
+  if (!url) return addLine('infrastructure: unknown node "' + a[1] + '"', 'err');
+  play('crt');
+  await printSeq(['resolving node ' + a[1].toUpperCase() + ' ...', 'handshake ........ OK', 'warning: legacy feed, pre-incident', 'redirecting...'], 450);
+  save();
+  location.href = url;
+},
   'ls': async () => {
     const f = Object.keys(FILES); if (S.adminOpen) f.push('notes.log', '[ARCHIVE]', '[PLAYBACK]');
     f.forEach(x => addLine('  ' + x));
@@ -345,6 +360,7 @@ function fmt(ms) {
 
 /* ---------- keys ---------- */
 addEventListener('keydown', e => {
+  if (!paperView.hidden) { if (e.key === 'Escape') closePaper(); return; }
   if (!$('#bookView').hidden) {
     if (e.key === 'Escape') closeBook(); else if (e.key === 'ArrowRight') turn(1); else if (e.key === 'ArrowLeft') turn(-1);
     return;
@@ -363,5 +379,5 @@ setInterval(() => {
 }, 90);
 
 /* ---------- init ---------- */
-applyLamp(); buildShelf(); updateVhs(); con.style.setProperty('--view', 0); show('room');
+applyLamp(); applyPaper(); buildShelf(); updateVhs(); con.style.setProperty('--view', 0); show('room');
 })();
