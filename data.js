@@ -1,7 +1,7 @@
 // ===== CONFIG: edit freely =====
 const CFG = {
   saveKey: "fih_hq_save_v1",
-  postItText: "pw:\n1234",              // text drawn on the post-it (cosmetic)
+  postItText: "pw:\n1234",             
   lockHash: "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",                 // sha256 of the lockscreen password
   adminHash: "65033ee27a9c18e229ddef2a7df90f2fa4a9ebc2d67e9d226640e4ac15679b52",               // sha256 of the admin bypass password
   cdHash: "425933deabc4220492fa1eeda2aef7346a02796888930c797a811c58bd0454a6",                     // sha256 of the volume name (UPPERCASE)
@@ -32,7 +32,7 @@ const BANNER = String.raw` ______ _____ _    _
  ----------------------------------
  AUTHORIZED PERSONNEL ONLY`;
 
-// ===== Fake files readable with: cat <file> =====
+// Fake files
 const FILES = {
   "readme.txt": ["F.I.H HQ workstation 06.", "Authorized staff only.", "If you are reading this, you are logged as guest, some functions may be restricted"],
   "todo.txt":   ["- change password (again)", "- ask Dave about the archive door", "- LEAVE the feed running","- verify the hashing function to destroy evidences"],
@@ -42,8 +42,8 @@ const FILES = {
   "gone.txt": ["[User Note] - Resigned", "Reason : \"I can't take it anymore, I can't work for a company that is willing to do anything to get what it wants, that is money most of the time. I can't be part of this anymore.", "They want to kill, they want to annihilate EVERYTHING that has gone through this rift, they even stole blueprints from the [Institute] to pursue their goal","I know something they have built a device they called it the [Portable Fish] I don't know exactly what they plan to do with it, as my last act of rebellion I left this station easily accessible, if you happen to find it, do what you need, seek the truth", "Note : Employee 032 was a good worker, but they were not able to handle the stress of the job. We wish them the best in their future endeavors.\""],
   "hashes.txt" : ["[Note to self] delete later or they will defo fire me, I'm just too much of an airhead to remember all of that...", "ADMN pass = <projectname>08"]
 }
-// ===== Hidden commands (usable after admin). Order of "id" = order in the volume name. =====
-// Volume name = FRAGMENTS joined by "-" in id order, e.g. FLAT-LINE-ZERO-SIX
+// Hidden commands
+// Volume name
 const CLUES = [
   { id: 1, cmd: "trace cam06",     frag: "FLAT", out: ["tracing feed origin...", "hop 1: HQ-GATEWAY", "hop 2: ████████", "[MAINTENANCE NOTE] : Delete feed to preserve deployed agent identity"] },
   { id: 2, cmd: "decode log 41",   frag: "LINE", out: ["decoding log at 41% integrity...", "...", "> Error Traceback : Failed to corrupt CAM06_feed, failed at 59%","> User cancelled operation"] },
@@ -51,7 +51,7 @@ const CLUES = [
   { id: 4, cmd: "query target",    frag: "SIX",  out: ["querying target registry...", "status field: ██████", "CODENAME : ENTITY-01 // Status : TBD",  "Deployed Agent : ████████, Executor of F.I.H"] },
 ];
 
-// ===== Library: add/remove books freely =====
+//Library
 const BOOKS = [
   { id: "handbook", title: "THE EMPLOYEE HANDBOOK", spine: "HANDBOOK", author: "HR DEPT.", h: 10, w: 2.4,
     cover: String.raw`+---------+
@@ -211,8 +211,4 @@ const SMUGGLED_BOOKS = [
 const TAPES = [
   { id: "main", hash: CFG.cdHash, type: "pulse", status: "Flatlined", statusColor: "red",
     pulse: { beats: 3 }, vhsMusic: true },
-  { id: "tape2", hash: "e28a02508a3870b82849b5205076d5e9478b9abf9a2aef9af536d247bfeb49b3", type: "gif",
-    src: "assets/tape_02.gif", status: "Unknown", statusColor: "white", start: null, vhsMusic: true },
-  { id: "tape3", hash: "b7395c0470d51db8844deccd56e9a26026b4066903251719c6d22feb315f6a40", type: "gif",
-    src: "assets/tape_03.gif", status: "Dormant", statusColor: "green", timer: false, vhsMusic: false }
 ];

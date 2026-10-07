@@ -63,9 +63,7 @@ TAPES.push({ id: 'aqua', hash: '508fa9aa7eb563f1db099413d518cb6d5c41aeead2a0f853
 
 const BAY = [
   { n: 1, title: 'FLATLINE ARCHIVE', tape: 'main',  vol: null,           info: 'the volume name is not stored in the bay index.' },
-  { n: 2, title: 'UNLABELED',        tape: 'tape2', vol: 'VOLUME-TWO',   info: '[PLACEHOLDER NOTE]' },
-  { n: 3, title: 'UNLABELED',        tape: 'tape3', vol: 'VOLUME-THREE', info: '[PLACEHOLDER NOTE]' },
-  { n: 4, title: 'AQUARIUM 07',      tape: 'aqua',  vol: 'AQUARIUM-07',  info: 'office screensaver. contains a small fishing game.\nhold the mouse on a fish to hook it. (do not tell the cat)' }
+  { n: 2, title: 'AQUARIUM 07',      tape: 'aqua',  vol: 'AQUARIUM-07',  info: 'office screensaver. contains a small fishing game.\nhold the mouse on a fish to hook it. (do not tell the cat)' }
 ];
 
 /* ================= dialogue box ================= */

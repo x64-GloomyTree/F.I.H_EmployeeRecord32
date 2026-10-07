@@ -1,12 +1,287 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<style>html{visibility:hidden}</style>
+<script>
+(function () {
+  let ok = false;
+  try { ok = JSON.parse(localStorage.getItem('fih_hq_save_v1') || '{}').doorOpen === true; } catch (e) {}
+  if (ok) document.documentElement.style.visibility = 'visible';
+  else location.replace('https://x64-gloomytree.github.io/F.I.H_EmployeeRecord32/');
+})();
+</script>
+<script>
+(() => {
+  let enabled = true;
+  try { enabled = JSON.parse(localStorage.getItem('fih_hq_save_v1') || '{}').sound !== false; } catch (e) {}
+  if (!enabled) return;
+
+  const TARGET = 0.4;                   
+  const a = new Audio('assets/waiting.mp3');
+  a.loop = true; a.volume = 0;
+
+  function fadeIn() {
+    let v = 0;
+    const id = setInterval(() => { v = Math.min(TARGET, v + 0.02); a.volume = v; if (v >= TARGET) clearInterval(id); }, 100);
+  }
+  function waitForClick() {
+    const go = () => {
+      removeEventListener('pointerdown', go); removeEventListener('keydown', go);
+      a.play().then(fadeIn).catch(() => {});
+    };
+    addEventListener('pointerdown', go); addEventListener('keydown', go);
+  }
+  a.play().then(fadeIn).catch(waitForClick);
+
+
+  const tb = document.createElement('div');
+  tb.className = 'tbtn'; tb.textContent = '♪ sound';
+  tb.addEventListener('click', () => { a.muted = !a.muted; tb.textContent = a.muted ? '♪ muted' : '♪ sound'; if (a.paused) a.play().then(fadeIn).catch(() => {}); });
+  document.querySelector('.taskbar').insertBefore(tb, document.getElementById('clock'));
+})();
+</script>
 <title>...</title>
 <style>
-html,body{margin:0;height:100%;background:#000;color:#39ff5a;font-family:'Lucida Console',monospace;display:flex;align-items:center;justify-content:center;text-align:center}
-a{color:#39ff5a}
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+html,body{margin:0;height:100%;overflow:hidden;background:#000;font-family:Tahoma,'Segoe UI',sans-serif}
+#scene{position:fixed;left:0;top:0;width:100vw;height:calc(100vh - 30px);image-rendering:pixelated;display:block;animation:flicker 6s infinite}
+
+/* XP window */
+.win{position:fixed;left:4vw;top:6vh;width:min(88vw,380px);z-index:20;border-radius:8px 8px 0 0;background:#ece9d8;box-shadow:3px 5px 14px rgba(0,0,0,.55);font-size:13px;color:#000}
+.title{display:flex;align-items:center;gap:6px;height:28px;padding:0 4px 0 8px;border:1px solid #0831d9;border-bottom:0;border-radius:7px 7px 0 0;color:#fff;cursor:move;user-select:none;touch-action:none;
+  background:linear-gradient(#0997ff 0%,#0053ee 8%,#0050ee 40%,#06f 88%,#06f 93%,#005bff 95%,#003dd7 96%);font:bold 13px 'Trebuchet MS',Tahoma,sans-serif;text-shadow:1px 1px #0f1089}
+.title .dot{width:14px;height:14px;border-radius:3px;background:linear-gradient(#7fd0ff,#2f7be0);border:1px solid #fff}
+.btns{margin-left:auto;display:flex;gap:2px}
+.btns i{display:block;width:21px;height:21px;border:1px solid #fff;border-radius:3px;background:linear-gradient(#5b8cf0,#2a5bd7);position:relative;cursor:pointer}
+.btns i.x{background:linear-gradient(#e8a08a,#c64a2a)}
+.btns i::after{content:"";position:absolute;left:5px;bottom:5px;width:9px;height:2px;background:#fff}
+.btns i.m::after{left:5px;top:5px;bottom:auto;width:9px;height:7px;background:none;border:1px solid #fff;border-top-width:2px}
+.btns i.x::after{content:"x";background:none;left:6px;top:0;bottom:auto;width:auto;height:auto;font:bold 14px Tahoma;line-height:19px}
+.wbody{padding:14px 16px 16px;border:3px solid #0831d9;border-top:0;background:#ece9d8}
+.wbody h2{margin:0 0 8px;font-size:15px}
+.wbody p{margin:0 0 14px}
+.xpbtn{display:inline-block;padding:4px 14px;border:1px solid #003c74;border-radius:3px;background:linear-gradient(#fff,#ecebe5 85%,#d6d0c5);color:#000;text-decoration:none;font:12px Tahoma,sans-serif}
+.xpbtn:hover{box-shadow:inset 0 0 0 2px #f9b43c}
+
+/* taskbar */
+.taskbar{position:fixed;left:0;right:0;bottom:0;height:30px;z-index:30;display:flex;align-items:stretch;
+  background:linear-gradient(#3168d5 0%,#4993e6 8%,#2157d7 12%,#245edb 88%,#1941a5 100%);font-family:Tahoma,sans-serif}
+.start{display:flex;align-items:center;gap:6px;padding:0 18px 0 10px;border:0;border-radius:0 12px 12px 0;color:#fff;cursor:pointer;
+  background:linear-gradient(#5aaa50,#3c9b3c 15%,#2e8b2e 85%,#1f6b1f);font:italic bold 17px 'Trebuchet MS',Tahoma,sans-serif;text-shadow:1px 1px #1b4d1b}
+.start i{width:16px;height:16px;background:conic-gradient(#f25022 0 25%,#7fba00 0 50%,#00a4ef 0 75%,#ffb900 0);border-radius:3px;transform:skewX(-6deg)}
+.tbtn{margin:3px 0 3px 8px;padding:0 14px;display:flex;align-items:center;color:#fff;font-size:12px;border-radius:3px;cursor:pointer;
+  background:linear-gradient(#1e52b7,#3b80ea 10%,#2a62cc);box-shadow:inset 0 0 0 1px rgba(0,0,0,.25);user-select:none}
+.tray{margin-left:auto;display:flex;align-items:center;padding:0 12px;border-left:1px solid #0c59b9;color:#fff;font-size:11px;
+  background:linear-gradient(#0f9bf0,#139af1 10%,#0b82e6 88%,#0a62c4)}
+.smenu{position:fixed;left:0;bottom:30px;width:240px;display:none;z-index:31;border:2px solid #0831d9;border-radius:8px 8px 0 0;background:#fff;font-size:13px;box-shadow:3px 3px 10px rgba(0,0,0,.5)}
+.smenu.open{display:block}
+.smenu .head{padding:8px 10px;color:#fff;font:bold 14px 'Trebuchet MS',Tahoma,sans-serif;background:linear-gradient(#2a6be0,#0a3fb5)}
+.smenu a,.smenu div.it{display:block;padding:8px 12px;color:#000;text-decoration:none;cursor:pointer}
+.smenu a:hover,.smenu div.it:hover{background:#316ac5;color:#fff}
+
+/* screen effects */
+#fx{position:fixed;inset:0;pointer-events:none;z-index:50;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px),radial-gradient(ellipse at center,transparent 58%,rgba(0,0,0,.6) 100%)}
+#noise{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:51;opacity:.07;mix-blend-mode:screen;image-rendering:pixelated}
+@keyframes flicker{0%,100%{opacity:1}92%{opacity:1}93%{opacity:.94}94%{opacity:1}97%{opacity:.97}}
+
 </style></head>
-<body><div>
-<h1>NEXT LAYER</h1>
-<p>[ PLACEHOLDER ]</p>
-<p><a href="index.html">[ go back ]</a></p>
-</div></body></html>
+<body>
+<canvas id="scene"></canvas>
+
+<div class="win" id="win">
+  <div class="title" id="title"><span class="dot"></span><span>Ocean.exe</span><span class="btns"><i class="m"></i><i></i><i class="x" id="wx"></i></span></div>
+  <div class="wbody">
+    <h2>NEXT LAYER : SOON&trade;</h2>
+    <p>Go away I'm building this</p>
+    <a class="xpbtn" href="index.html">[ go back to your office ]</a>
+  </div>
+</div>
+
+<div class="smenu" id="smenu">
+  <div class="head">F.I.H Workstation</div>
+  <a href="index.html">Go back to your office</a>
+  <div class="it" id="shut">Shut Down...</div>
+</div>
+<div class="taskbar">
+  <button class="start" id="start"><i></i>start</button>
+  <div class="tbtn" id="tb">Ocean.exe</div>
+  <div class="tray" id="clock">06:00 AM</div>
+</div>
+
+<canvas id="noise"></canvas>
+<div id="fx"></div>
+
+<script>
+(() => {
+  const CYCLE = 120;            
+  const START = 0.18;             
+  const cv = document.getElementById('scene'), ctx = cv.getContext('2d');
+  let W = 320, H = 180, HOR = 99, seaImg = null, stars = [], clouds = [], gulls = [];
+
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+  const mix = (c1, c2, t) => [lerp(c1[0], c2[0], t), lerp(c1[1], c2[1], t), lerp(c1[2], c2[2], t)];
+  const rgb = (c, a = 1) => 'rgba(' + (c[0] | 0) + ',' + (c[1] | 0) + ',' + (c[2] | 0) + ',' + a + ')';
+
+
+  const STOPS = [
+    { e: -1,   top: [2, 4, 24],     bot: [10, 16, 48],    far: [10, 22, 60],    near: [3, 8, 26],   amb: 0.25 },
+    { e: -0.2, top: [6, 10, 40],    bot: [26, 30, 80],    far: [22, 34, 84],    near: [5, 12, 36],  amb: 0.3 },
+    { e: 0.0,  top: [43, 58, 107],  bot: [255, 138, 90],  far: [255, 150, 110], near: [20, 40, 90], amb: 0.7 },
+    { e: 0.3,  top: [79, 134, 200], bot: [243, 184, 138], far: [130, 170, 210], near: [22, 70, 130], amb: 0.9 },
+    { e: 1,    top: [61, 142, 230], bot: [191, 230, 255], far: [110, 190, 235], near: [18, 90, 160], amb: 1 }
+  ];
+  function palette(e) {
+    for (let i = 0; i < STOPS.length - 1; i++) {
+      const a = STOPS[i], b = STOPS[i + 1];
+      if (e <= b.e || i === STOPS.length - 2) {
+        const t = clamp((e - a.e) / (b.e - a.e));
+        return { top: mix(a.top, b.top, t), bot: mix(a.bot, b.bot, t), far: mix(a.far, b.far, t), near: mix(a.near, b.near, t), amb: lerp(a.amb, b.amb, t) };
+      }
+    }
+  }
+
+  function fit() {
+    const h = Math.max(100, innerHeight - 30);
+    H = 180; W = Math.max(240, Math.round(H * innerWidth / h));
+    cv.width = W; cv.height = H; HOR = Math.floor(H * 0.55);
+    seaImg = ctx.createImageData(W, H - HOR);
+    stars = Array.from({ length: 70 }, () => ({ x: (Math.random() * W) | 0, y: (Math.random() * HOR * 0.8) | 0, s: 1 + Math.random() * 3 }));
+    clouds = Array.from({ length: 6 }, () => ({ x: Math.random() * W, y: 8 + Math.random() * HOR * 0.5, s: 1 + Math.floor(Math.random() * 2), v: 1.5 + Math.random() * 3 }));
+    gulls = Array.from({ length: 5 }, (_, i) => ({ x: Math.random() * W, y: 10 + Math.random() * HOR * 0.6, v: (6 + Math.random() * 10) * (i % 2 ? 1 : -1), ph: Math.random() * 6, sz: 1 + (i % 2) }));
+  }
+  fit(); addEventListener('resize', fit);
+
+  function disc(cx, cy, r, style) {
+    ctx.fillStyle = style;
+    for (let dy = -r; dy <= r; dy++) { const dx = Math.floor(Math.sqrt(r * r - dy * dy)); ctx.fillRect(Math.round(cx) - dx, Math.round(cy) + dy, dx * 2 + 1, 1); }
+  }
+  function cloud(x, y, s, style) {
+    disc(x, y, 3 * s, style); disc(x + 4 * s, y - s, 4 * s, style); disc(x + 9 * s, y, 3 * s, style);
+    ctx.fillStyle = style; ctx.fillRect(Math.round(x - 2 * s), Math.round(y), 13 * s, Math.round(2 * s));
+  }
+  function gull(g, t, col) {
+    const flap = Math.sin(t * 7 + g.ph), x = Math.round(g.x), y = Math.round(g.y), n = 2 + 2 * g.sz;
+    ctx.fillStyle = col; ctx.fillRect(x - 1, y, 3, 1);
+    for (let i = 1; i <= n; i++) { const off = -Math.round(flap * i * 0.5); ctx.fillRect(x - 1 - i, y + off, 1, 1); ctx.fillRect(x + 1 + i, y + off, 1, 1); }
+  }
+
+  const clockEl = document.getElementById('clock'); let lastMin = -1;
+  let last = 0;
+  function frame(ms) {
+    requestAnimationFrame(frame);
+    if (ms - last < 33) return;
+    const dt = Math.min(0.1, (ms - last) / 1000); last = ms;
+    const t = ms / 1000, p = (START + t / CYCLE) % 1, th = p * Math.PI * 2;
+    const sunE = Math.sin(th), moonE = -sunE, pal = palette(sunE);
+    const sx = W * 0.5 - Math.cos(th) * W * 0.42, sy = HOR - sunE * HOR * 0.85;
+    const mx = W * 0.5 + Math.cos(th) * W * 0.42, my = HOR + sunE * HOR * 0.85;
+    const night = clamp((0.55 - pal.amb) * 4);
+
+    // sky
+    for (let y = 0; y < HOR; y++) { ctx.fillStyle = rgb(mix(pal.top, pal.bot, Math.pow(y / HOR, 1.2))); ctx.fillRect(0, y, W, 1); }
+    ctx.save(); ctx.beginPath(); ctx.rect(0, 0, W, HOR); ctx.clip();
+    // stars
+    const sa = clamp((0.1 - sunE) * 4);
+    if (sa > 0) stars.forEach(s => { const a = sa * (0.5 + 0.5 * Math.sin(t * s.s + s.x)); ctx.fillStyle = 'rgba(255,255,255,' + a.toFixed(2) + ')'; ctx.fillRect(s.x, s.y, 1, 1); });
+    // sun and moon
+    if (sunE > -0.25) {
+      const a = clamp((sunE + 0.25) * 2.5) * 0.55, gr = ctx.createRadialGradient(sx, sy, 2, sx, sy, 40);
+      gr.addColorStop(0, 'rgba(255,225,160,' + a + ')'); gr.addColorStop(1, 'rgba(255,225,160,0)');
+      ctx.fillStyle = gr; ctx.fillRect(sx - 42, sy - 42, 84, 84);
+      disc(sx, sy, 6, rgb(mix([255, 120, 60], [255, 244, 210], clamp(sunE * 3))));
+    }
+    if (moonE > -0.25) {
+      const a = clamp((moonE + 0.25) * 2) * 0.25, gr = ctx.createRadialGradient(mx, my, 2, mx, my, 26);
+      gr.addColorStop(0, 'rgba(190,205,255,' + a + ')'); gr.addColorStop(1, 'rgba(190,205,255,0)');
+      ctx.fillStyle = gr; ctx.fillRect(mx - 28, my - 28, 56, 56);
+      disc(mx, my, 5, 'rgb(225,230,245)'); disc(mx - 1, my - 1, 1, 'rgb(190,198,220)'); disc(mx + 2, my + 1, 1, 'rgb(190,198,220)'); disc(mx - 2, my + 2, 1, 'rgb(200,208,228)');
+    }
+    // clouds
+    const cc = mix(mix(pal.bot, [255, 255, 255], 0.55), [40, 46, 80], 1 - clamp(pal.amb * 1.1));
+    clouds.forEach(c => { c.x += c.v * dt; if (c.x > W + 20) c.x = -20; cloud(c.x, c.y, c.s, rgb(cc, 0.85)); });
+    ctx.restore();
+
+    // sea (per pixel)
+    const SH = H - HOR, data = seaImg.data;
+    const sunVis = clamp((sunE + 0.05) * 5), moonVis = clamp((moonE + 0.05) * 5) * 0.8;
+    for (let yy = 0; yy < SH; yy++) {
+      const d = yy / SH, base = mix(pal.far, pal.near, Math.pow(d, 0.55));
+      const fx = 0.05 + d * 0.11, fy = 0.4 + d * 0.5, hw = 3 + d * 16;
+      for (let x = 0; x < W; x++) {
+        const v = Math.sin(x * fx + t * (0.7 + d) + yy * fy) + Math.sin(x * fx * 0.5 - t * 0.5 + yy * fy * 0.7);
+        let r = base[0], g = base[1], b = base[2];
+        if (v > 1.5 - d * 0.25) { r = lerp(r, pal.bot[0] + 60, 0.35); g = lerp(g, pal.bot[1] + 60, 0.35); b = lerp(b, pal.bot[2] + 60, 0.35); }
+        else if (v < -1.6) { r *= 0.82; g *= 0.82; b *= 0.82; }
+        if (sunVis > 0) { const dx = Math.abs(x - sx); if (dx < hw) { const k = 1 - dx / hw; if (v + k * 1.6 > 1.0) { const q = k * sunVis; r = lerp(r, 255, q); g = lerp(g, 236, q); b = lerp(b, 170, q); } } }
+        if (moonVis > 0) { const dx = Math.abs(x - mx); if (dx < hw * 0.7) { const k = 1 - dx / (hw * 0.7); if (v + k * 1.6 > 1.1) { const q = k * moonVis; r = lerp(r, 205, q); g = lerp(g, 220, q); b = lerp(b, 255, q); } } }
+        const i = (yy * W + x) * 4; data[i] = r; data[i + 1] = g; data[i + 2] = b; data[i + 3] = 255;
+      }
+    }
+    ctx.putImageData(seaImg, 0, HOR);
+    ctx.fillStyle = rgb(mix(pal.bot, [255, 255, 255], 0.35), 0.5); ctx.fillRect(0, HOR - 1, W, 1);
+
+    // lighthouse
+    const lx = Math.round(W * 0.84), ly = HOR - 11;
+    ctx.fillStyle = rgb(mix([14, 18, 26], [70, 74, 80], pal.amb)); ctx.fillRect(lx - 6, HOR - 2, 13, 3); ctx.fillRect(lx - 4, HOR - 3, 9, 1);
+    for (let k = 0; k < 8; k++) { ctx.fillStyle = (k % 2) ? rgb(mix([40, 20, 20], [200, 60, 50], pal.amb)) : rgb(mix([40, 40, 46], [240, 240, 240], pal.amb)); ctx.fillRect(lx - 1, HOR - 3 - k, 3, 1); }
+    ctx.fillStyle = night > 0.2 ? (Math.floor(t * 2) % 2 ? '#ffe9a0' : '#9a8240') : '#333'; ctx.fillRect(lx - 1, ly, 3, 2);
+    if (night > 0.05) {
+      const a = t * 0.9, dxb = Math.cos(a) * W * 0.7, inten = Math.pow(Math.abs(Math.cos(a)), 2) * night * 0.2;
+      ctx.fillStyle = 'rgba(255,240,170,' + inten.toFixed(3) + ')';
+      ctx.beginPath(); ctx.moveTo(lx, ly + 1); ctx.lineTo(lx + dxb, ly - 4); ctx.lineTo(lx + dxb, ly + 6); ctx.closePath(); ctx.fill();
+    }
+
+    // seagulls
+    const ga = clamp((pal.amb - 0.35) * 2.5);
+    if (ga > 0.05) {
+      const gc = rgb(mix([40, 40, 60], [250, 250, 255], pal.amb), ga);
+      gulls.forEach(g => { g.x += g.v * dt; if (g.v > 0 && g.x > W + 10) { g.x = -10; g.y = 10 + Math.random() * HOR * 0.6; } if (g.v < 0 && g.x < -10) { g.x = W + 10; g.y = 10 + Math.random() * HOR * 0.6; } gull(g, t, gc); });
+    }
+
+  
+    const hh = (6 + p * 24) % 24, mm = Math.floor(hh * 60), minute = mm % 60;
+    if (mm !== lastMin) {
+      lastMin = mm; const h12 = Math.floor(hh) % 12 || 12;
+      clockEl.textContent = String(h12).padStart(2, '0') + ':' + String(minute).padStart(2, '0') + (hh >= 12 ? ' PM' : ' AM');
+    }
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+
+<script>
+// noise, window dragging, start menu
+(() => {
+  const nc = document.getElementById('noise'), nx = nc.getContext('2d');
+  function rs() { nc.width = innerWidth / 3; nc.height = innerHeight / 3; }
+  rs(); addEventListener('resize', rs);
+  setInterval(() => {
+    const im = nx.createImageData(nc.width, nc.height), d = im.data;
+    for (let i = 0; i < d.length; i += 4) { const v = Math.random() * 255; d[i] = d[i + 1] = d[i + 2] = v; d[i + 3] = 255; }
+    nx.putImageData(im, 0, 0);
+  }, 90);
+
+  const win = document.getElementById('win'), title = document.getElementById('title');
+  let drag = null;
+  title.addEventListener('pointerdown', e => {
+    if (e.target.closest('.btns')) return;
+    const r = win.getBoundingClientRect(); drag = { dx: e.clientX - r.left, dy: e.clientY - r.top };
+    title.setPointerCapture(e.pointerId);
+  });
+  title.addEventListener('pointermove', e => {
+    if (!drag) return;
+    win.style.left = Math.max(0, Math.min(innerWidth - 80, e.clientX - drag.dx)) + 'px';
+    win.style.top = Math.max(0, Math.min(innerHeight - 60, e.clientY - drag.dy)) + 'px';
+  });
+  title.addEventListener('pointerup', () => { drag = null; });
+  document.getElementById('wx').addEventListener('click', () => { win.style.display = 'none'; });
+  document.getElementById('tb').addEventListener('click', () => { win.style.display = win.style.display === 'none' ? '' : 'none'; });
+
+  const menu = document.getElementById('smenu');
+  document.getElementById('start').addEventListener('click', e => { e.stopPropagation(); menu.classList.toggle('open'); });
+  addEventListener('click', () => menu.classList.remove('open'));
+  document.getElementById('shut').addEventListener('click', () => { menu.classList.remove('open'); alert('Nice try. The ocean does not shut down.'); });
+})();
+</script>
+</body></html>
