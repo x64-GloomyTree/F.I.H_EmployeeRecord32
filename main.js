@@ -385,21 +385,23 @@ function updateVhs() {
     const st = $('#vhsStatus'); st.textContent = t.status || 'Unknown'; st.className = 'r ' + (t.statusColor || 'white');
     $('#vhsTimer').hidden = t.timer === false;
   }
-  if (!on) { vImg.removeAttribute('src'); FIHPulse.stop(); vBox.classList.remove('playing', 'loading', 'pulse'); stop('vhs'); }
+  if (!on) { vImg.removeAttribute('src'); FIHPulse.stop(); if (window.FIHAqua) FIHAqua.stop(); vBox.classList.remove('playing', 'loading', 'pulse', 'aqua'); stop('vhs'); }
   else if (view === 1) startVhs();
   musicSync(); save();
 }
 function startVhs() {
   const t = tapeNow(); if (!t) return;
-  FIHPulse.stop(); vBox.classList.remove('playing', 'pulse'); vBox.classList.add('loading'); play('vhs');
+  FIHPulse.stop(); if (window.FIHAqua) FIHAqua.stop();
+  vBox.classList.remove('playing', 'pulse', 'aqua'); vBox.classList.add('loading'); play('vhs');
   setTimeout(() => {
     if (tapeNow() !== t) return;
     vBox.classList.remove('loading');
     if (t.type === 'pulse') { vImg.removeAttribute('src'); vBox.classList.add('playing', 'pulse'); FIHPulse.start($('#vhsCanvas'), t.pulse || {}); }
+    else if (t.type === 'aqua') { vImg.removeAttribute('src'); vBox.classList.add('playing', 'aqua'); FIHAqua.start($('#vhsCanvas')); }
     else { vImg.src = t.src + '?r=' + Date.now(); vBox.classList.add('playing'); }
   }, 900);
 }
-function stopVhs() { stop('vhs'); FIHPulse.stop(); }
+function stopVhs() { stop('vhs'); FIHPulse.stop(); if (window.FIHAqua) FIHAqua.stop(); }
 $('#ejectBtn').addEventListener('click', () => { S.mounted = false; updateVhs(); toast('tape ejected.'); play('click'); });
 
 function fmt(ms) {
@@ -438,7 +440,7 @@ setInterval(() => {
   nx.putImageData(im, 0, 0);
 }, 90);
 
-window.FIHBridge = { get S() { return S; }, save, play, stop, toast, addLine, printSeq, sleep, sha, unlockDoor, touchy };
+window.FIHBridge = { get S() { return S; }, save, play, stop, toast, addLine, printSeq, sleep, sha, unlockDoor, touchy, updateVhs };
 addEventListener('pageshow', e => { if (e.persisted) location.reload(); });
 
 /* ---------- init ---------- */
