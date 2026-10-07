@@ -6,7 +6,7 @@ const CFG = {
   adminHash: "65033ee27a9c18e229ddef2a7df90f2fa4a9ebc2d67e9d226640e4ac15679b52",               // sha256 of the admin bypass password
   cdHash: "425933deabc4220492fa1eeda2aef7346a02796888930c797a811c58bd0454a6",                     // sha256 of the volume name (UPPERCASE)
   cdGif: "assets/cd_tape.gif",
-  doorUrl: "",
+  doorUrl: "next.html",
   stopwatchStart: "2026-10-01T03:12:00+02:00", 
   paperText: "reminder to self:\n\nthe old feed still runs on the\ninfrastructure side. nobody\nturned it off after the incident.\n\ntype:\ninfrastructure --connect cam06",
   nodes: {
@@ -191,7 +191,8 @@ const SMUGGLED_BOOKS = [
 +---------+`,
     pages: [
       "Extract of the Institute Blueprint List\n\nThe blueprints F.I.H took.\nDO NOT DISTRIBUTE\nDO NOT COPY",
-      "[DOOR HINT 2/3 PLACEHOLDER]"
+      "[The section seems to be cut before that point]\n\n The [INSTITUTE] has been working on a device that can be used to manipulate the rift, it is called the [Portable Fish]. The device is not yet fully functional, but it is capable of stabilizing the rift for a short period of time which allows the user to enter (fuse ?) with [Another Ocean].\n A side effect to note : The device can supposedly repel [????] as well as impairing it's ability to cross planes, it's currently what protects the institute (at a larger scale) from it.",
+      "A prototype was reported missing in the 7th laboratory on the ░░░░░░ in ░░░ sector. Although we believed this technology was meant in the end to be accessible to the general public, the secrecy of the projetc at the current time made the Institute raise suspicion on whereas the device was simply broken or missing, or if it was stolen with ulterior motives.\n\n (It is now know that F.I.H was the one to take it, they're undergoing a trial for DMCA violation but this surely will lead nowhere)"
     ] },
   { id: "inst_manual", title: "LOCKDOWN MANUAL", spine: "LOCKDOWN", author: "[INSTITUTE]", smuggled: true, h: 9.5, w: 2.3,
     cover: String.raw`+---------+

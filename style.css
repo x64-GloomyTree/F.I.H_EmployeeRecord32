@@ -75,7 +75,8 @@ button{font-family:inherit;cursor:pointer}
 .inv .btn{background:rgba(0,0,0,.6)}
 
 /* flippable paper */
-.flipwrap{perspective:1400px;display:flex;flex-direction:column;align-items:center;gap:1em}
+#paperView{position:fixed;inset:0;z-index:35;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;overflow:auto;animation:fadein .3s}
+.flipwrap{margin:auto;transform:translateY(-3vh)}
 #flip{position:relative;width:min(86vw,26em);font-size:clamp(16px,2.6vmin,26px);transform-style:preserve-3d;touch-action:none;cursor:grab;user-select:none}
 .face{backface-visibility:hidden;-webkit-backface-visibility:hidden;min-height:12em;padding:1.2em 1.4em;font-family:'Pixelify Sans','VT323',monospace;color:#1f2a5a;background:repeating-linear-gradient(0deg,transparent 0 1.3em,rgba(40,50,90,.25) 1.3em 1.35em),#d8d4c2;box-shadow:0 .5em 2em #000}
 .face.back{position:absolute;inset:0;transform:rotateY(180deg);display:flex;flex-direction:column;align-items:center;justify-content:center}
@@ -147,6 +148,8 @@ button{font-family:inherit;cursor:pointer}
 #bookView{position:absolute;inset:3.2em 7% 1.2em;background:#010a03;border:.18em double var(--g);display:flex;flex-direction:column;padding:1em 1.4em;z-index:10;box-shadow:0 0 3em #000}
 #bkHead{display:flex;justify-content:space-between;align-items:center;border-bottom:1px dashed var(--gd);padding-bottom:.4em}
 #bkText{flex:1;margin:.8em 0;overflow:auto;white-space:pre-wrap;line-height:1.2;color:#d6ffdd;font:inherit}
+#bkGo{display:flex;gap:.4em;justify-content:center;margin-top:.5em}
+#bkGoIn{width:5em;background:#000;color:var(--g);border:1px solid var(--gd);font:inherit;padding:.1em .3em}
 .bknav{display:flex;justify-content:space-between;align-items:center}
 
 /* VHS */

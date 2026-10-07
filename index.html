@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><script src="manual.js"></script>
+<script src="lockdown.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>...</title>
@@ -91,7 +92,12 @@
           <div id="bookView" hidden>
             <div id="bkHead"><span id="bkTitle"></span><button class="btn" id="bkClose">[ X ]</button></div>
             <pre id="bkText"></pre>
-            <div class="bknav"><button class="btn" id="bkPrev">&lt; PREV</button><span id="bkNum"></span><button class="btn" id="bkNext">NEXT &gt;</button></div>
+            <div class="bknav">
+              <span><button class="btn" id="bkBack10">&lt;&lt;</button> <button class="btn" id="bkPrev">&lt; PREV</button></span>
+              <span id="bkNum"></span>
+              <span><button class="btn" id="bkNext">NEXT &gt;</button> <button class="btn" id="bkFwd10">&gt;&gt;</button></span>
+            </div>
+            <form id="bkGo"><input id="bkGoIn" type="number" min="1" placeholder="page"><button class="btn" type="submit">GO</button></form>
           </div>
         </div>
 
@@ -149,6 +155,9 @@
 <div id="fx"></div>
 <canvas id="noise"></canvas>
 <script src="data.js"></script>
+<script src="manual.js"></script>
+<script src="lockdown.js"></script>
+<script src="record.js"></script>
 <script src="music.js"></script>
 <script src="pulse.js"></script>
 <script src="main.js"></script>

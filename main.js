@@ -94,7 +94,11 @@ function openPaper() {
   $('#usbKey').hidden = S.hasUsb; $('#tornTape').hidden = !S.hasUsb; paperView.hidden = false;
 }
 function closePaper() { paperView.hidden = true; play('click'); }
-function unlockDoor() { S.doorOpen = true; applyDoor(); play('crt'); toast('the iron rods retract. the door is unlocked.'); save(); }
+function unlockDoor(silent) {
+  S.doorOpen = true; applyDoor();
+  if (!silent) { play('crt'); toast('the iron rods retract. the door is unlocked.'); }
+  save();
+}
 
 paperEl.addEventListener('click', () => { S.hasPaper = true; applyPaper(); play('click'); openPaper(); save(); });
 noteBtn.addEventListener('click', () => { play('click'); openPaper(); });
@@ -112,10 +116,18 @@ usbPort.addEventListener('click', () => {
   if (!S.hasUsb) return toast('a USB port. nothing plugged in.');
   S.usbPlugged = true; applyUsb(); buildShelf(); play('crt'); toast('USB detected. 3 new books were added to the archive.'); save();
 });
+let doorBusy = false;
 doorEl.addEventListener('click', () => {
-  play('click');
-  if (!S.doorOpen) return toast('LOCKDOWN. breach detected. iron rods seal the door. you are not authorized.');
-  if (CFG.doorUrl) location.href = CFG.doorUrl; else toast('the door is open. (next layer not built yet)');
+  if (doorBusy) return;
+  if (!S.doorOpen) { play('lk_door_locked'); return toast('LOCKDOWN. breach detected. iron rods seal the door. you are not authorized.'); }
+  doorBusy = true; play('lk_door_open'); doorEl.classList.add('swing');
+  setTimeout(() => { play('lk_zoom'); stage.classList.add('doorzoom'); }, 700);
+  setTimeout(() => {
+    const f = document.createElement('div');
+    f.style.cssText = 'position:fixed;inset:0;background:#000;opacity:0;transition:opacity .7s;z-index:44;pointer-events:none';
+    document.body.appendChild(f); requestAnimationFrame(() => { f.style.opacity = 1; });
+  }, 2000);
+  setTimeout(() => { location.href = CFG.doorUrl || 'next.html'; }, 2800);
 });
 $('#screenHit').addEventListener('click', () => {
   if (zooming) return; zooming = true; play('click'); stage.classList.add('zoom');
@@ -294,6 +306,7 @@ async function run(raw) {
   const line = raw.trim(); if (!line) return;
   S.history.push(line); if (S.history.length > 100) S.history.shift();
   const tk = line.split(/\s+/), key = tk.map(x => x.toLowerCase()).join(' ');
+  if (S.adminOpen && window.lkHandle && await window.lkHandle(tk)) return;
   if (S.adminOpen) { const cl = CLUES.find(x => x.cmd === key); if (cl) return doClue(cl); }
   const fn = CMDS[tk[0].toLowerCase()];
   if (fn) await fn(tk.slice(1)); else addLine("'" + tk[0] + "' is not recognized as a command. Type --help.", 'err');
@@ -334,16 +347,31 @@ function openBook(b) {
   $('#bookView').hidden = false; renderPage(); if (!S.read.includes(b.id)) S.read.push(b.id); play('click'); save();
 }
 function renderPage() {
-  $('#bkTitle').textContent = curBook.title; $('#bkText').textContent = curBook.pages[page];
+  $('#bkTitle').textContent = curBook.title;
+  if (window.FIHRecord) FIHRecord.render($('#bkText'), curBook.pages[page]); else $('#bkText').textContent = curBook.pages[page];
   $('#bkNum').textContent = (page + 1) + ' / ' + curBook.pages.length;
   $('#bkPrev').disabled = page === 0; $('#bkNext').disabled = page === curBook.pages.length - 1;
   S.pages[curBook.id] = page; save();
 }
-function turn(d) { const n = page + d; if (n >= 0 && n < curBook.pages.length) { page = n; renderPage(); play('click'); } }
+
+function turn(d) { goTo(page + d); }
+function goTo(n) {
+  n = Math.max(0, Math.min(curBook.pages.length - 1, n));
+  if (n !== page) { page = n; renderPage(); play('click'); }
+}
 function closeBook() { $('#bookView').hidden = true; play('click'); }
 $('#bkPrev').addEventListener('click', () => turn(-1));
 $('#bkNext').addEventListener('click', () => turn(1));
 $('#bkClose').addEventListener('click', closeBook);
+$('#bkBack10').addEventListener('click', () => turn(-10));
+$('#bkFwd10').addEventListener('click', () => turn(10));
+$('#bkGo').addEventListener('submit', e => {
+  e.preventDefault();
+  const v = parseInt($('#bkGoIn').value, 10);
+  if (!isNaN(v)) goTo(v - 1);
+  $('#bkGoIn').value = '';
+});
+
 
 /* ---------- VHS ---------- */
 const vBox = $('#vhsScreen'), vImg = $('#vhsImg');
@@ -392,7 +420,9 @@ function fmt(ms) {
 addEventListener('keydown', e => {
   if (!paperView.hidden) { if (e.key === 'Escape') closePaper(); return; }
   if (!$('#bookView').hidden) {
+    if (e.target.tagName === 'INPUT' && e.key !== 'Escape') return;
     if (e.key === 'Escape') closeBook(); else if (e.key === 'ArrowRight') turn(1); else if (e.key === 'ArrowLeft') turn(-1);
+    else if (e.key === 'PageDown') turn(10); else if (e.key === 'PageUp') turn(-10);
     return;
   }
   if (e.key === 'Escape' && (current === 'console' || current === 'lock')) enterRoom();
@@ -407,6 +437,9 @@ setInterval(() => {
   for (let i = 0; i < d.length; i += 4) { const v = Math.random() * 255; d[i] = d[i + 1] = d[i + 2] = v; d[i + 3] = 255; }
   nx.putImageData(im, 0, 0);
 }, 90);
+
+window.FIHBridge = { get S() { return S; }, save, play, stop, toast, addLine, printSeq, sleep, sha, unlockDoor, touchy };
+addEventListener('pageshow', e => { if (e.persisted) location.reload(); });
 
 /* ---------- init ---------- */
 applyLamp(); applyPaper(); applyUsb(); applyDoor(); buildShelf(); updateVhs(); con.style.setProperty('--view', 0); show('room');
