@@ -10,9 +10,9 @@ const CAT = {
   fishImg: 'assets/img/fish.png',
   catImg: 'assets/img/cat.png',
   eatGif: 'assets/img/cat_fish_eat.gif',
-  fishRot: 0,              // extra rotation (radians) if fish.png does not face right
+  fishRot: 180,              // extra rotation (radians) if fish.png does not face right
   hp: 6,                   // player hit points
-  hitbox: 0.25,            // player hitbox radius as a fraction of the sprite (smaller = easier)
+  hitbox: 0.20,            // player hitbox radius as a fraction of the sprite (smaller = easier)
   speed: 1.0               // global attack speed multiplier
 };
 const sprite = e => 'assets/img/cat_' + e + '.webp';
