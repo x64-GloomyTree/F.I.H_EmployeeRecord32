@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>F.I.H // HQ</title>
+<style>html{background:#000}body{visibility:hidden}</style>
+<script>
+/* soft gate: only players who lifted the lockdown get in (localhost bypass for testing) */
+(function(){
+  var local=/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+  var ok=false;
+  try{ok=JSON.parse(localStorage.getItem('fih_hq_save_v1')||'{}').doorOpen===true}catch(e){}
+  if(!ok&&!local){location.replace('index.html')}
+  else{document.addEventListener('DOMContentLoaded',function(){document.body.style.visibility='visible'})}
+})();
+</script>
+<link rel="stylesheet" href="hq.css">
+</head>
+<body>
+
+<div id="gate" role="button" tabindex="0">
+  <div class="gate-orb"></div>
+  <div class="gate-txt">click to begin</div>
+  <div class="gate-sub">headphones recommended</div>
+</div>
+
+<section id="intro" hidden aria-live="polite">
+  <div class="ib ib1"></div><div class="ib ib2"></div><div class="ib ib3"></div>
+  <div id="introText">
+    <p class="q qa" id="qa"></p>
+    <p class="q qb" id="qb"></p>
+  </div>
+  <button id="skip" type="button">Skip <kbd>Space</kbd></button>
+</section>
+
+<main id="room" hidden>
+  <div id="view">
+    <div class="stage" id="stage"></div>
+  </div>
+  <div id="lids"><i class="lid lt"></i><i class="lid lb"></i></div>
+</main>
+
+<div id="tip" hidden></div>
+<div id="dlg" hidden>
+  <div id="dlgWho"></div>
+  <div id="dlgTxt"></div>
+  <div id="dlgNext">&#9660;</div>
+</div>
+<div id="toast" hidden></div>
+
+<button id="gear" type="button" aria-label="Settings" aria-expanded="false" hidden>
+  <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M19.4 13a7.7 7.7 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.6 7.6 0 0 0-1.7-1L15 3.4h-4l-.4 2.6a7.6 7.6 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7.7 7.7 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7.6 7.6 0 0 0 1.7 1l.4 2.6h4l.4-2.6a7.6 7.6 0 0 0 1.7-1l2.4 1 2-3.4zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>
+</button>
+
+<div id="menu" hidden role="dialog" aria-label="Settings">
+  <h2>Settings</h2>
+  <div class="grp">Audio</div>
+  <label class="row"><span>Master</span><input type="range" id="s_master" min="0" max="1" step="0.01"><output></output></label>
+  <label class="row"><span>Music (BGM)</span><input type="range" id="s_bgm" min="0" max="1" step="0.01"><output></output></label>
+  <label class="row"><span>Effects (SFX)</span><input type="range" id="s_sfx" min="0" max="1" step="0.01"><output></output></label>
+  <label class="row chk"><span>Mute all</span><input type="checkbox" id="s_mute"></label>
+  <div class="grp">Comfort</div>
+  <label class="row chk"><span>Reduce scanlines and grain</span><input type="checkbox" id="s_fx"></label>
+  <label class="row chk"><span>Reduce motion</span><input type="checkbox" id="s_motion"></label>
+  <label class="row chk"><span>Reduce flashing</span><input type="checkbox" id="s_flash"></label>
+  <label class="row chk"><span>High contrast</span><input type="checkbox" id="s_contrast"></label>
+  <label class="row"><span>Text speed</span><input type="range" id="s_text" min="0.5" max="2.5" step="0.1"><output></output></label>
+  <label class="row"><span>UI scale</span><input type="range" id="s_scale" min="0.8" max="1.5" step="0.05"><output></output></label>
+  <div class="grp">Controls</div>
+  <label class="row chk"><span>Mobile controls (drag to look, big tap zones)</span><input type="checkbox" id="s_mobile"></label>
+  <div class="grp">Progress</div>
+  <div class="btns">
+    <button type="button" id="b_replay">Replay intro</button>
+    <button type="button" id="b_reset" class="danger">Reset HQ progress</button>
+  </div>
+  <p class="hint">Esc closes this menu.</p>
+</div>
+
+<div id="rot" hidden><div class="rotico"></div><p>Rotate your device to landscape</p></div>
+<div id="fx"><i class="scan"></i><i class="grain"></i><i class="vig"></i></div>
+
+<script src="hq-data.js"></script>
+<script src="hq.js"></script>
+</body>
+</html>
