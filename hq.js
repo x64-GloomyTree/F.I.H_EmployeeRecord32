@@ -207,7 +207,7 @@ const ART = {
   board: () => '<div class="board" style="position:absolute"><u>HQ STATUS</u><s style="top:52%"></s><s style="top:70%;right:30%"></s></div>',
   door: () => '<i class="door-f"></i><i class="door-k"></i>',
   window: () => '<i class="win-f"></i>',
-  ws: c => '<i class="legs"></i><i class="chair"></i><i class="emp"></i><i class="desk"></i><i class="mon"><b></b></i><i class="kb"></i>',
+  ws: () => '<i class="legs"></i><i class="chair"></i><i class="desk"></i><i class="mon"><b></b></i><i class="kb"></i>',
   printer: () => '<i class="pr-paper"></i><i class="pr-print"></i>',
   cat: () => '<i class="cat-b"></i><i class="cat-h"></i><i class="cat-e"></i><i class="cat-e2"></i>',
   reception: () => '<i class="rc-body"></i><i class="rc-top"></i><i class="rc-glow"></i><i class="rc-bell"></i>',

@@ -1,4 +1,4 @@
-/* hq-data.js : all content lives here. Edit freely. */
+
 window.HQ_DATA = {
   cfg: {
     introMusic: 'assets/defeat.mp3',
@@ -36,19 +36,19 @@ window.HQ_DATA = {
     { id:'window_r', layer:'back', x:72, y:6, w:17, h:19, art:'window', label:'Window', who:'',
       lines:[ 'No ships. No gulls. Just a calm, endless blue.' ]},
 
-    { id:'ws_b1', layer:'mid', x:9.5,  y:24, w:12, h:13, art:'ws', cls:'emp', label:'Workstation', who:'Employee',
-      lines:[ '...', 'Please hold. I am in the middle of something.' ]},
+    { id:'ws_b1', layer:'mid', x:9.5, y:24, w:12, h:13, art:'ws', label:'Workstation', who:'',
+      lines:[ 'The screen is on. The chair faces away from you.', 'A cursor blinks in a half-written sentence.' ]},
     { id:'ws_b2', layer:'mid', x:23.5, y:24, w:12, h:13, art:'ws', label:'Workstation', who:'',
       lines:[ 'Empty. The chair is still warm.' ]},
-    { id:'ws_b3', layer:'mid', x:65.5, y:24, w:12, h:13, art:'ws', cls:'emp', label:'Workstation', who:'Employee',
-      lines:[ 'Do not look at my screen.', 'It is just a spreadsheet. A very sad spreadsheet.' ]},
+    { id:'ws_b3', layer:'mid', x:65.5, y:24, w:12, h:13, art:'ws', label:'Workstation', who:'',
+      lines:[ 'A spreadsheet fills the monitor. Every cell holds the same number.', 'A mug sits beside the keyboard, still steaming.' ]},
     { id:'ws_b4', layer:'mid', x:79.5, y:24, w:12, h:13, art:'ws', label:'Workstation', who:'',
       lines:[ 'A sticky note on the monitor: "ask Dave".' ]},
     { id:'printer', layer:'mid', x:92, y:29, w:7, h:7, art:'printer', label:'Printer', who:'',
       lines:[ 'It prints one page, then another. Both are blank.', 'PC LOAD LETTER. Always.' ]},
 
-    { id:'ws_f1', layer:'near', x:2,  y:33, w:17, h:20, art:'ws', cls:'emp', label:'Workstation', who:'Employee',
-      lines:[ 'Oh. You are new. Welcome to the open floor.', 'Everything here is monitored, but kindly.' ]},
+    { id:'ws_f1', layer:'near', x:2, y:33, w:17, h:20, art:'ws', label:'Workstation', who:'',
+      lines:[ 'Everything is monitored here, but kindly.', 'The chair is pushed back, as if someone just stood up.' ]},
     { id:'ws_f2', layer:'near', x:81, y:33, w:17, h:20, art:'ws', label:'Workstation', who:'',
       lines:[ 'The monitor is locked. A login prompt waits for a name.' ]},
     { id:'cat', layer:'near', x:15.5, y:34.6, w:4, h:3.4, art:'cat', label:'Cat', who:'',
