@@ -8,11 +8,7 @@
 <script>
 /* soft gate: only players who lifted the lockdown get in (localhost bypass for testing) */
 (function(){
-  var local=/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
-  var ok=false;
-  try{ok=JSON.parse(localStorage.getItem('fih_hq_save_v1')||'{}').doorOpen===true}catch(e){}
-  if(!ok&&!local){location.replace('index.html')}
-  else{document.addEventListener('DOMContentLoaded',function(){document.body.style.visibility='visible'})}
+  {document.addEventListener('DOMContentLoaded',function(){document.body.style.visibility='visible'})}
 })();
 </script>
 <link rel="stylesheet" href="hq.css">
@@ -82,5 +78,12 @@
 
 <script src="hq-data.js"></script>
 <script src="hq.js"></script>
+<script src="assets/death.js"></script>
+<script src="hq-items.js"></script>
+<script src="hq-site-data.js"></script>
+<script src="hq-sites.js"></script>
+<script src="hq-minigame.js"></script>
+<script src="hq-browser.js"></script>
+<script src="hq-sites-parody.js"></script>
 </body>
 </html>

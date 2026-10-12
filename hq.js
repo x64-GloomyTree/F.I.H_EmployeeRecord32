@@ -204,6 +204,7 @@ const ART = {
     for (let i = 0; i < 5; i++) h += `<i class="weed" style="left:${6 + i * 20}%;height:${18 + (i * 7) % 16}%;animation-delay:-${i}s"></i>`;
     return h + '<i class="sand"></i></div><i class="glare"></i></div><i class="aqbase"></i>';
   },
+  cardprop: () => '<i style="inset:0;border-radius:.3em;background:linear-gradient(115deg,#fff,#bcd3e0);border:.1em solid #fff;box-shadow:0 .2em .5em #0007;transform:rotate(-7deg)"></i><i style="left:0;right:0;top:0;height:30%;border-radius:.3em .3em 0 0;background:#2c8fc4;transform:rotate(-7deg)"></i>',
   board: () => '<div class="board" style="position:absolute"><u>HQ STATUS</u><s style="top:52%"></s><s style="top:70%;right:30%"></s></div>',
   door: () => '<i class="door-f"></i><i class="door-k"></i>',
   window: () => '<i class="win-f"></i>',
@@ -221,7 +222,7 @@ function buildRoom() {
   const back = mk('back', 3), mid = mk('mid', 8), near = mk('near', 15), fg = mk('fg', 28, 'deco');
   back.append(el('div', 'ceil'), el('div', 'wall'), el('div', 'floor'), el('div', 'skirt'), el('div', 'rays'));
   [8, 42, 76].forEach(x => { const t = el('i', 'tube'); t.style.left = x + 'em'; back.appendChild(t); });
-  D.items.forEach(it => {
+  D.items.filter(it => !(window.HQItems && HQItems.hidden(it))).forEach(it => {
     const n = el('div', 'it ' + (it.art === 'ws' ? 'ws ' : '') + (it.cls === 'emp' ? 'occ' : ''));
     n.dataset.id = it.id; n.tabIndex = 0; n.setAttribute('role', 'button'); n.setAttribute('aria-label', it.label);
     n.style.cssText = `left:${it.x}em;top:${it.y}em;width:${it.w}em;height:${it.h}em`;
@@ -273,7 +274,7 @@ function interact(it) {
   if (dlgOpen || !$('#menu').hidden && false) return;
   hideTip(); sfx.click();
   const first = !HQ.seen[it.id]; HQ.seen[it.id] = (HQ.seen[it.id] || 0) + 1; saveHQ();
-  if (it.id === 'door') sfx.deny();
+  if (window.HQItems && HQItems.handle(it)) return;
   const lines = it.pick ? [it.lines[Math.floor(Math.random() * it.lines.length)]] : it.lines.slice();
   openDlg(it.who || '', lines);
 }
@@ -309,7 +310,7 @@ function enterRoom() {
   void lids.offsetWidth;
   room.classList.add('waking'); lids.classList.add('open');
   const dur = ST.motion ? 1500 : ST.flash ? 3100 : 5100;
-  setTimeout(() => { lids.classList.add('done'); room.classList.remove('waking'); }, dur);
+  setTimeout(() => { lids.classList.add('done'); room.classList.remove('waking'); window.HQItems && HQItems.refresh(); }, dur);
   HQ.introSeen = true; saveHQ();
   setTimeout(() => toast(ST.mobile ? 'Drag to look around. Tap things.' : 'Look around. Click things.'), dur + 400);
 }
@@ -320,7 +321,7 @@ function boot() {
   $('#skip').addEventListener('click', skipIntro);
   $('#dlg').addEventListener('click', advanceDlg);
   addEventListener('keydown', e => {
-    if (e.key === 'Escape') { if (!$('#menu').hidden) toggleMenu(false); else if ($('#gear').hidden === false) toggleMenu(true); return; }
+    if (e.key === 'Escape') { if (window.HQItems && HQItems.closeTop()) return; else if ($('#gear').hidden === false) toggleMenu(true); return; }
     const tag = (e.target.tagName || '').toLowerCase();
     if (e.code === 'Space' && tag !== 'input' && tag !== 'button') {
       e.preventDefault();
@@ -333,6 +334,6 @@ function boot() {
   $('#gate').addEventListener('keydown', e => { if (e.key === 'Enter' || e.code === 'Space') { e.preventDefault(); start(); } });
   $('#gate').focus();
 }
-window.HQ = { D, get ST() { return ST; }, get HQ() { return HQ; }, toast, openDlg, sfx, blip };
+window.HQ = { D, music, applyAudio, get ST() { return ST; }, get HQ() { return HQ; }, toast, openDlg, sfx, blip };
 boot();
 })();

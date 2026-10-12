@@ -2,11 +2,15 @@
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <style>html{visibility:hidden}</style>
 <script>
-(function () {
-  let ok = false;
-  try { ok = JSON.parse(localStorage.getItem('fih_hq_save_v1') || '{}').doorOpen === true; } catch (e) {}
-  if (ok) document.documentElement.style.visibility = 'visible';
-  else location.replace('https://x64-gloomytree.github.io/F.I.H_EmployeeRecord32/');
+(function(){
+  var local=/^(localhost|127\.0\.0\.1)$/.test(location.hostname), ok=false;
+  try{
+    var a=JSON.parse(localStorage.getItem('fih_hq_save_v1')||'{}');
+    var b=JSON.parse(localStorage.getItem('fih_hq_layer2_v1')||'{}');
+    ok = a.doorOpen===true || (b.tier||0)>=1 || b.hqDone===true;
+  }catch(e){}
+  if(!ok&&!local) location.replace('HQ.html');
+  else document.addEventListener('DOMContentLoaded',function(){document.body.style.visibility='visible'});
 })();
 </script>
 <script>

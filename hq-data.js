@@ -29,9 +29,10 @@ window.HQ_DATA = {
       ]},
     { id:'board', layer:'back', x:41, y:1.6, w:18, h:5.2, art:'board', label:'Status board', who:'',
       lines:[ 'HQ STATUS: ALL SYSTEMS NOMINAL.', 'Below it, in small print: "incident count since last review: 0". The 0 looks freshly taped on.' ]},
-    { id:'door', layer:'back', x:1, y:13, w:8, h:21, art:'door', label:'Door', who:'',
-      lines:[ 'Locked. The keypad blinks red.', 'You are not cleared for this floor. Yet.' ]},
-    { id:'window_l', layer:'back', x:11, y:6, w:17, h:19, art:'window', label:'Window', who:'',
+    { id:'door', layer:'back', x:1, y:13, w:8, h:21, art:'door', label:'Door', who:'', gate:1, go:'next.html',
+      lines:[ 'Locked. The keypad blinks red.', 'Your badge is not elevated. A terminal inside the base might fix that.' ],
+      okLines:[ '' ]},
+    { id:'window_l', layer:'back', x:14, y:6, w:17, h:19, art:'window', label:'Window', who:'',
       lines:[ 'The sea. From up here it looks like it is breathing.' ]},
     { id:'window_r', layer:'back', x:72, y:6, w:17, h:19, art:'window', label:'Window', who:'',
       lines:[ 'No ships. No gulls. Just a calm, endless blue.' ]},
@@ -49,15 +50,39 @@ window.HQ_DATA = {
 
     { id:'ws_f1', layer:'near', x:2, y:33, w:17, h:20, art:'ws', label:'Workstation', who:'',
       lines:[ 'Everything is monitored here, but kindly.', 'The chair is pushed back, as if someone just stood up.' ]},
-    { id:'ws_f2', layer:'near', x:81, y:33, w:17, h:20, art:'ws', label:'Workstation', who:'',
-      lines:[ 'The monitor is locked. A login prompt waits for a name.' ]},
+    { id:'ws_f2', layer:'near', x:81, y:33, w:17, h:20, art:'ws', label:'Workstation', who:'', pc:true, lines:[] },
     { id:'cat', layer:'near', x:15.5, y:34.6, w:4, h:3.4, art:'cat', label:'Cat', who:'',
       lines:[ 'A small cat sits on the desk, looking at the aquarium with intent.', 'It looks at you, then at the aquarium again. Not subtle.' ]},
     { id:'reception', layer:'near', x:38, y:45, w:24, h:10, art:'reception', label:'Reception', who:'',
       lines:[ 'Nobody at the desk. A bell sits on top.', 'A visitor log, last entry: "Please keep it quiet."' ]},
+    { id:'idcard', layer:'near', x:49.4, y:44, w:3.6, h:2.3, art:'cardprop', label:'ID card', who:'', pickup:'idcard', lines:[] },
     { id:'plant', layer:'near', x:24, y:33, w:6, h:13, art:'plant', label:'Plant', who:'',
       lines:[ 'A very healthy plant. Suspiciously healthy.' ]},
     { id:'cooler', layer:'near', x:70, y:33, w:6, h:13, art:'cooler', label:'Water cooler', who:'',
       lines:[ 'Cold water. It tastes like a normal day.', 'Someone wrote "do not drink" on the cup stack, then crossed it out.' ]}
-  ]
+  ],
+pickups: { idcard: { name: 'Employee ID' } },
+
+card: {
+  org: 'F.I.H', orgSub: 'FACILITY ACCESS BADGE',
+  nameHidden: 'XXXXXXXX XXXXXXXXX',
+  no: '0032', dept: 'Containment Support', tier: 'TIER 0 / STAFF', issued: '2019-03-12',
+  backPrinted: [
+    'Network ID format: letter e + employee number, 3 digits.',
+    'Clearance changes are handled at the internal base terminal only.',
+    'If found, return to Reception. Do not return to Employee 032.'
+  ],
+  note: 'pw: where I would rather be, then my number'
+},
+
+creds: {
+  /* sha256 of lowercase text. placeholders: e032 / lake032 */
+  loginHash: '38fcb05ed5122288afc734c3ccdb641a7302d4a4d130e43ede53a166a508c357',
+  passHash:  '56b10b02447073103096ffee15a6efe500e78d55611a51153b3b9b4ef56ec3aa',
+  user: 'e032',
+  welcome: 'session restored',
+  failText: 'credentials rejected.',
+  promptText: 'clearance routine available.',
+  alreadyText: 'nothing left to elevate.'
+}
 };
